@@ -9602,3 +9602,28 @@ hr {
 /* .show0 {
   display: block !important;
 } */
+
+@media only screen and (max-width: 768px) {
+  :where(.css-dev-only-do-not-override-1ae8k9u).ant-table-wrapper
+    .ant-table-thead
+    th.ant-table-column-has-sorters {
+    width: 140px;
+  }
+  .ant-table-cell img {
+    max-width: max-content;
+  }
+  :where(.css-dev-only-do-not-override-1ae8k9u).ant-table-wrapper
+    .ant-table-column-sorters {
+    width: 140px;
+  }
+}
+@media only screen and (max-width: 475px) {
+  :where(.css-dev-only-do-not-override-1ae8k9u).ant-table-wrapper
+    .ant-table-thead
+    th.ant-table-column-has-sorters {
+    width: 140px;
+  }
+  .ant-table-cell img {
+    max-width: max-content;
+  }
+}
