@@ -48,7 +48,7 @@ const SignInPage = () => {
     await axios(config)
       .then((response) => {
         console.log(response.data);
-        if (response.data.success === 0) {
+        if (response.data.success === 0 || response.data.success === false) {
           setError(response.data.msg);
         }
         if (response.data.success === true) {
