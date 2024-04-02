@@ -15,6 +15,7 @@ import "react-toastify/dist/ReactToastify.css";
 const BrandList = () => {
   const [rawMaterial, setRawMaterial] = useState([]);
   const [filterData, setFilterData] = useState([]);
+  const [defaultValue, setDefaultValue] = useState(null);
 
   const columns = [
     {
@@ -26,13 +27,13 @@ const BrandList = () => {
     {
       title: "Name",
       dataIndex: "raw_name",
-      render: (text, record) => (
-        <div className="productimgname">
-          <Link to="#" style={{ fontSize: "15px", marginLeft: "10px" }}>
-            {record.raw_name}
-          </Link>
-        </div>
-      ),
+      // render: (text, record) => (
+      //   <div className="productimgname">
+      //     <Link to="#" style={{ fontSize: "15px", marginLeft: "10px" }}>
+      //       {record.raw_name}
+      //     </Link>
+      //   </div>
+      // ),
       sorter: (a, b) => a.raw_name.length - b.raw_name.length,
     },
     {
@@ -133,12 +134,16 @@ const BrandList = () => {
   };
 
   function filterDataContainingLetter(arr, letter) {
-    return arr.filter((obj) => obj.raw_name.includes(letter));
+    return arr.filter((obj) => obj.raw_name.toLowerCase().includes(letter));
   }
 
   const handleSearchCategory = (e) => {
     let value = e.target.value;
-    const filteredData = filterDataContainingLetter(rawMaterial, value);
+    setDefaultValue(value);
+    const filteredData = filterDataContainingLetter(
+      rawMaterial,
+      value.toLowerCase()
+    );
     setFilterData(filteredData);
     // console.log(filteredData);
   };
@@ -227,7 +232,7 @@ const BrandList = () => {
               {/* /Filter */}
 
               <div className="table-responsive">
-                {filterData.length > 0 ? (
+                {defaultValue?.length > 0 ? (
                   <>
                     <Table
                       columns={columns}

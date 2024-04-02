@@ -3,6 +3,7 @@ import { API_URL } from "../../config";
 import axios from "axios";
 import { ToastContainer, toast } from "react-toastify";
 import { useHistory } from "react-router-dom";
+import reset from "../../assets/img/reset1.png";
 
 const AddProduct = () => {
   const [token, setToken] = useState("");
@@ -12,6 +13,7 @@ const AddProduct = () => {
   const [categoryList, setCategoryList] = useState([]);
   const [flatSize, setFlatSize] = useState("");
   const [perUnitWeight, setPerUnitWeight] = useState("");
+
   const [inputs, setInputs] = useState([
     {
       raw_id: "",
@@ -233,6 +235,10 @@ const AddProduct = () => {
       ]);
     }
   }, [productDetails]);
+
+  const handleCancel = () => {
+    history.push("productlist-product");
+  };
   return (
     <>
       <div className="page-wrapper">
@@ -375,25 +381,27 @@ const AddProduct = () => {
                       key={index}
                     >
                       {index === 0 && <label>Action</label>}
-                      {index === inputs.length - 1 && index > 0 && (
-                        <>
-                          <label>&nbsp;</label>
+                      {index > 0 && <label>&nbsp;</label>}
+                      <div className="d-flex">
+                        {index === inputs.length - 1 && (
                           <button
-                            className="delplus"
-                            onClick={() => handleDeleteInput(index)}
+                            className="addplus"
+                            onClick={() => handleAddInput()}
                           >
-                            -
+                            +
                           </button>
-                        </>
-                      )}
-                      {index === inputs.length - 1 && (
-                        <button
-                          className="addplus"
-                          onClick={() => handleAddInput()}
-                        >
-                          +
-                        </button>
-                      )}
+                        )}
+                        {index === inputs.length - 1 && index > 0 && (
+                          <>
+                            <button
+                              className="reset mx-3"
+                              onClick={() => handleDeleteInput(index)}
+                            >
+                              <img src={reset} />
+                            </button>
+                          </>
+                        )}
+                      </div>
                     </div>
                     {/* <div className="body"> {JSON.stringify(inputs)} </div> */}
                   </>
@@ -405,7 +413,9 @@ const AddProduct = () => {
                   >
                     Submit
                   </button>
-                  <button className="btn btn-cancel">Cancel</button>
+                  <button className="btn btn-cancel" onClick={handleCancel}>
+                    Cancel
+                  </button>
                 </div>
               </div>
             </div>

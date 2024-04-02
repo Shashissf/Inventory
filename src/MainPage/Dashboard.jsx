@@ -7,6 +7,7 @@ import RightSideBar from "../components/rightSidebar";
 import { API_URL } from "../config";
 import axios from "axios";
 import Table from "../EntryFile/datatable";
+import { Link } from "react-router-dom/cjs/react-router-dom";
 
 const Dashboard = () => {
   const [dataCount, setDataCount] = useState({});
@@ -158,38 +159,43 @@ const Dashboard = () => {
         <div className="content">
           <div className="row">
             <div className="col-lg-3 col-sm-6 col-12">
-              <div className="dash-widget">
-                <div className="dash-widgetimg">
-                  <span>
-                    <img src={Dash1} alt="img" />
-                  </span>
-                </div>
-                <div className="dash-widgetcontent">
-                  <h5>
-                    <span className="counters">
-                      <CountUp end={dataCount?.productCount} />
+              <Link to="/dream-pos/product/productlist-product">
+                <div className="dash-widget">
+                  <div className="dash-widgetimg">
+                    <span>
+                      <img src={Dash1} alt="img" />
                     </span>
-                  </h5>
-                  <h6>Total Products</h6>
+                  </div>
+                  <div className="dash-widgetcontent">
+                    <h5>
+                      <span className="counters">
+                        <CountUp end={dataCount?.productCount} />
+                      </span>
+                    </h5>
+                    <h6>Total Products</h6>
+                  </div>
                 </div>
-              </div>
+              </Link>
             </div>
+
             <div className="col-lg-3 col-sm-6 col-12">
-              <div className="dash-widget dash1">
-                <div className="dash-widgetimg">
-                  <span>
-                    <img src={Dash2} alt="img" />
-                  </span>
-                </div>
-                <div className="dash-widgetcontent">
-                  <h5>
-                    <span className="counters">
-                      <CountUp end={dataCount?.rawMetrailCount} />
+              <Link to="/dream-pos/product/brandlist-product">
+                <div className="dash-widget dash1">
+                  <div className="dash-widgetimg">
+                    <span>
+                      <img src={Dash2} alt="img" />
                     </span>
-                  </h5>
-                  <h6>Total Raw Materials</h6>
+                  </div>
+                  <div className="dash-widgetcontent">
+                    <h5>
+                      <span className="counters">
+                        <CountUp end={dataCount?.rawMetrailCount} />
+                      </span>
+                    </h5>
+                    <h6>Total Raw Materials</h6>
+                  </div>
                 </div>
-              </div>
+              </Link>
             </div>
             {/* <div className="col-lg-3 col-sm-6 col-12">
               <div className="dash-widget dash2">
@@ -209,21 +215,23 @@ const Dashboard = () => {
               </div>
             </div> */}
             <div className="col-lg-3 col-sm-6 col-12">
-              <div className="dash-widget dash3">
-                <div className="dash-widgetimg">
-                  <span>
-                    <img src={Dash4} alt="img" />
-                  </span>
-                </div>
-                <div className="dash-widgetcontent">
-                  <h5>
-                    <span className="counters">
-                      <CountUp end={rawMaterial?.length} />
+              <Link to="/dream-pos/product/brandlist-product">
+                <div className="dash-widget dash3">
+                  <div className="dash-widgetimg">
+                    <span>
+                      <img src={Dash4} alt="img" />
                     </span>
-                  </h5>
-                  <h6>Total Items in stock alert</h6>
+                  </div>
+                  <div className="dash-widgetcontent">
+                    <h5>
+                      <span className="counters">
+                        <CountUp end={rawMaterial?.length} />
+                      </span>
+                    </h5>
+                    <h6>Total Items in stock alert</h6>
+                  </div>
                 </div>
-              </div>
+              </Link>
             </div>
             {/* <div className="col-lg-3 col-sm-6 col-12">
               <div className="dash-widget dash3">
@@ -243,21 +251,23 @@ const Dashboard = () => {
               </div>
             </div> */}
             <div className="col-lg-3 col-sm-6 col-12">
-              <div className="dash-widget dash3">
-                <div className="dash-widgetimg">
-                  <span>
-                    <img src={Dash4} alt="img" />
-                  </span>
-                </div>
-                <div className="dash-widgetcontent">
-                  <h5>
-                    <span className="counters">
-                      <CountUp end={dataCount?.OrderProcessing?.length} />
+              <Link to="/dream-pos/sales/saleslist">
+                <div className="dash-widget dash3">
+                  <div className="dash-widgetimg">
+                    <span>
+                      <img src={Dash4} alt="img" />
                     </span>
-                  </h5>
-                  <h6>Total Orders under processing</h6>
+                  </div>
+                  <div className="dash-widgetcontent">
+                    <h5>
+                      <span className="counters">
+                        <CountUp end={dataCount?.OrderProcessing?.length} />
+                      </span>
+                    </h5>
+                    <h6>Total Orders under processing</h6>
+                  </div>
                 </div>
-              </div>
+              </Link>
             </div>
           </div>
           <div className="row">

@@ -14,6 +14,7 @@ import { useHistory } from "react-router-dom";
 const SalesList = () => {
   const [orderList, setOrderList] = useState([]);
   const [filterData, setFilterData] = useState([]);
+  const [defaultValue, setDefaultValue] = useState(null);
 
   const history = useHistory();
 
@@ -88,7 +89,7 @@ const SalesList = () => {
             <Select
               style={{ width: "100%" }}
               onChange={(e) => handleStatus(e, record)}
-              defaultValue={{ label: record.status, value: record.status }}
+              value={{ label: record.status, value: record.status }}
               options={options}
             />
           </div>
@@ -171,6 +172,9 @@ const SalesList = () => {
     await axios(config)
       .then((response) => {
         console.log(response.data);
+        response?.data?.result.map((item) => {
+          console.log(item.status);
+        });
         setOrderList(response.data.result);
       })
       .catch((error) => {
@@ -179,10 +183,10 @@ const SalesList = () => {
   };
 
   function filterDataContainingLetter(arr, letter) {
-    return arr.filter((obj) => obj.product_name.includes(letter));
+    return arr.filter((obj) => obj.product_name.toLowerCase().includes(letter));
   }
   function filterDataContainingLetterCustomer(arr, letter) {
-    return arr.filter((obj) => obj.customername.includes(letter));
+    return arr.filter((obj) => obj.customername.toLowerCase().includes(letter));
   }
   function filterDataContainingOrderStatus(arr, letter) {
     return arr.filter((obj) => obj.status.includes(letter));
@@ -190,12 +194,21 @@ const SalesList = () => {
 
   const handleSearchCategory = (e) => {
     let value = e.target.value;
-    const filteredData = filterDataContainingLetter(orderList, value);
+    setDefaultValue(value);
+
+    const filteredData = filterDataContainingLetter(
+      orderList,
+      value.toLowerCase()
+    );
     setFilterData(filteredData);
   };
   const handleSearchCustomers = (e) => {
     let value = e.target.value;
-    const filteredData = filterDataContainingLetterCustomer(orderList, value);
+    setDefaultValue(value);
+    const filteredData = filterDataContainingLetterCustomer(
+      orderList,
+      value.toLowerCase()
+    );
     setFilterData(filteredData);
   };
 
@@ -294,7 +307,7 @@ const SalesList = () => {
                 <div className="row">
                   <div className="col-lg-12 col-sm-12">
                     <div className="row">
-                      <div className="col-lg-4 col-sm-4 col-4">
+                      <div className="col-lg-4 col-sm-4 col-xs-6">
                         <div className="form-group">
                           <input
                             type="text"
@@ -304,7 +317,7 @@ const SalesList = () => {
                           />
                         </div>
                       </div>
-                      <div className="col-lg-4 col-sm-4 col-4">
+                      <div className="col-lg-4 col-sm-4 col-xs-6">
                         <div className="form-group">
                           <input
                             type="text"
@@ -314,20 +327,20 @@ const SalesList = () => {
                           />
                         </div>
                       </div>
-                      <div className="col-lg-4 col-sm-4 col-4">
+                      <div className="col-lg-4 col-sm-4 col-xs-6">
                         <div className="form-group">
                           <select
-                            name="order_status"
-                            id="order_status"
+                            name="status"
+                            id="status"
                             className="cat"
                             onChange={handleOrderStatus}
                           >
-                            <option value={""}>Search by Status</option>
-                            <option value={"Not Started"}>Not Started</option>
-                            <option value={"Processing"}>Processing</option>
-                            <option value={"Completed"}>Completed</option>
-                            <option value={"Stuck"}>Stuck</option>
-                            <option value={"Cancelled"}>Cancelled</option>
+                            <option value="">Search by Status</option>
+                            <option value="Not Started">Not Started</option>
+                            <option value="Processing">Processing</option>
+                            <option value="Completed">Completed</option>
+                            <option value="Stuck">Stuck</option>
+                            <option value="Cancelled">Cancelled</option>
                           </select>
                         </div>
                       </div>
@@ -336,7 +349,7 @@ const SalesList = () => {
                 </div>
               </div>
               <div className="table-responsive">
-                {filterData.length > 0 ? (
+                {defaultValue?.length > 0 ? (
                   <>
                     <Table
                       columns={columns}

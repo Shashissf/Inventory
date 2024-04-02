@@ -15,6 +15,7 @@ import "react-toastify/dist/ReactToastify.css";
 const ProductList = () => {
   const [productList, setProductList] = useState([]);
   const [filterData, setFilterData] = useState([]);
+  const [defaultValue, setDefaultValue] = useState(null);
 
   console.log(productList);
 
@@ -102,13 +103,17 @@ const ProductList = () => {
 
   function filterDataContainingLetter(arr, letter) {
     return arr.filter((obj) =>
-      obj.product_category?.categoryName.includes(letter)
+      obj.product_category?.categoryName.toLowerCase().includes(letter)
     );
   }
 
   const handleSearchCategory = (e) => {
     let value = e.target.value;
-    const filteredData = filterDataContainingLetter(productList, value);
+    setDefaultValue(value);
+    const filteredData = filterDataContainingLetter(
+      productList,
+      value.toLowerCase()
+    );
     setFilterData(filteredData);
     // console.log(filteredData);
   };
@@ -185,7 +190,7 @@ const ProductList = () => {
                 </div>
               </div>
               <div className="table-responsive">
-                {filterData.length > 0 ? (
+                {defaultValue?.length > 0 ? (
                   <>
                     <Table
                       columns={columns}
