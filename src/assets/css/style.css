@@ -9599,9 +9599,9 @@ hr {
   justify-content: space-between;
   align-items: center;
 }
-/* .show0 {
-  display: block !important;
-} */
+.invalid-feedback {
+  font-size: 14px;
+}
 
 @media only screen and (max-width: 768px) {
   :where(.css-dev-only-do-not-override-1ae8k9u).ant-table-wrapper

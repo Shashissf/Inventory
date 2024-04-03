@@ -215,6 +215,7 @@ const SalesList = () => {
   const handleOrderStatus = (e) => {
     const { name, value } = e.target;
     console.log(name, value);
+    setDefaultValue(value);
     const filteredData = filterDataContainingOrderStatus(orderList, value);
     console.log(filteredData);
     setFilterData(filteredData);

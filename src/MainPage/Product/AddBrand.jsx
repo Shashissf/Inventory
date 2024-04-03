@@ -22,6 +22,8 @@ const AddBrand = () => {
     e.preventDefault();
     let raw_cat = document.getElementById("raw_category");
     addRawMaterial["raw_category"] = raw_cat.value;
+    addRawMaterial["gsm_product"] =
+      addRawMaterial?.raw_gsm * addRawMaterial?.raw_gauge;
     // addRawMaterial["raw_gsm"] = getGsm;
     const config = {
       method: "POST",

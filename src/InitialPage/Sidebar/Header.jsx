@@ -25,14 +25,14 @@ import { Link } from "react-router-dom";
 import FeatherIcon from "feather-icons-react";
 import { useHistory } from "react-router-dom";
 
-const Header = (props) => {
+const Header = () => {
   const [toggle, SetToggle] = useState(false);
   const token = JSON.parse(localStorage.getItem("items"));
   const history = useHistory();
 
   const logOut = () => {
-    localStorage.removeItem("items");
     setTimeout(() => {
+      localStorage.removeItem("items");
       history.push("/signin");
     }, 3000);
   };

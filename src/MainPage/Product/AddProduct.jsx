@@ -13,6 +13,7 @@ const AddProduct = () => {
   const [categoryList, setCategoryList] = useState([]);
   const [flatSize, setFlatSize] = useState("");
   const [perUnitWeight, setPerUnitWeight] = useState("");
+  const [message, setMessage] = useState([]);
 
   const [inputs, setInputs] = useState([
     {
@@ -156,12 +157,18 @@ const AddProduct = () => {
           Number(productDetails.product_width) *
             Number(productDetails.repeat_width) +
           10;
+
         setFlatSize(flat * Number(productDetails.product_length));
 
         inputs[index]["substrate"] = selectedText;
         if (index > 0) {
           flat = Number(flat) + 5 * index;
           console.log(flat);
+          if (Number(response.data.result.raw_length) < flat) {
+            message[index] = "Flat Size width is greater than Substrate width";
+          } else if (Number(response.data.result.raw_length) > flat) {
+            message[index] = "Flat Size width is less than Substrate width";
+          }
           inputs[index]["flat_size"] = `${flat} X ${Number(
             productDetails.product_length
           )}`;
@@ -172,6 +179,12 @@ const AddProduct = () => {
           setPerUnitWeight(unitWeight / 1000000);
           inputs[index]["perunit_weight"] = unitWeight / 1000000;
         } else {
+          if (Number(response.data.result.raw_length) < flat) {
+            message[index] = "Flat Size width is greater than Substrate width";
+          } else if (Number(response.data.result.raw_length) > flat) {
+            message[index] = "Flat Size width is less than Substrate width";
+          }
+          setMessage(message);
           inputs[index]["flat_size"] = `${flat} X ${Number(
             productDetails.product_length
           )}`;
@@ -235,6 +248,7 @@ const AddProduct = () => {
       ]);
     }
   }, [productDetails]);
+  console.log(message);
 
   const handleCancel = () => {
     history.push("productlist-product");
@@ -345,6 +359,7 @@ const AddProduct = () => {
                           );
                         })}
                       </select>
+                      <span style={{ color: "red" }}>{message[index]}</span>
                     </div>
                     <div
                       className="col-lg-3 col-sm-3 col-12 form-group"

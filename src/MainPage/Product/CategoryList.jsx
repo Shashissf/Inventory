@@ -1,12 +1,9 @@
-/* eslint-disable no-dupe-keys */
 import React, { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
-// import Swal from "sweetalert2";
 import Table from "../../EntryFile/datatable";
 import { PlusIcon, EditIcon, DeleteIcon } from "../../EntryFile/imagePath";
 // import Select2 from "react-select2-wrapper";
 import "react-select2-wrapper/css/select2.css";
-// import { noAuto } from "@fortawesome/fontawesome-svg-core";
 import { API_URL } from "../../config";
 import axios from "axios";
 import { ToastContainer, toast } from "react-toastify";

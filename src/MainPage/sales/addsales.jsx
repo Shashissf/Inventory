@@ -32,7 +32,8 @@ const Addsales = () => {
   const [rawMaterial, setRawMaterial] = useState([]);
   const [stockDeduction, setStockDeduction] = useState([]);
   const [modalIsOpen, setIsOpen] = useState(false);
-  const [addDed, setAddDed] = useState(0);
+  // const [addDed, setAddDed] = useState(0);
+  var addDed = 0;
 
   let rawStockId = 1;
   function openModal() {
@@ -45,7 +46,15 @@ const Addsales = () => {
   }
 
   function closeModal() {
+    setStockDeduction([]);
     setIsOpen(false);
+    {
+      inputs?.map((item) => {
+        item.total_weight = 0;
+        // item.req_weight = 0;
+        return item;
+      });
+    }
   }
 
   const [inputs, setInputs] = useState([]);
@@ -53,6 +62,10 @@ const Addsales = () => {
   const history = useHistory();
 
   const token = JSON.parse(localStorage.getItem("items"));
+
+  // useEffect(() => {
+  //   console.log(addDed);
+  // }, [addDed]);
 
   useEffect(() => {
     fetchData();
@@ -222,13 +235,13 @@ const Addsales = () => {
       });
       return;
     } else {
-      if (addDed !== 0) {
-        let newVal = addDed - manage_weight;
-        setAddDed(newVal);
-      } else {
-        let newVal = req_weight.value - addDed - manage_weight;
-        setAddDed(newVal);
-      }
+      // if (addDed !== 0) {
+      //   let newVal = addDed - manage_weight;
+      //   setAddDed(newVal);
+      // } else {
+      //   let newVal = req_weight.value - addDed - manage_weight;
+      //   setAddDed(newVal);
+      // }
       const indexToUpdate = stockDeduction.findIndex(
         (obj) => obj.id === dropValue.id
       );
@@ -242,6 +255,7 @@ const Addsales = () => {
       } else {
         item["total_weight"] = item["total_weight"] + manage_weight;
         dropValue["manage_weight"] = manage_weight;
+
         arr.push(dropValue);
         setStockDeduction(arr);
       }
@@ -297,9 +311,6 @@ const Addsales = () => {
         console.log(error);
       });
   };
-  useEffect(() => {
-    console.log(stockDeduction);
-  }, [stockDeduction]);
 
   const handleDeleteStock = (index, item) => {
     setStockDeduction([]);
@@ -475,7 +486,8 @@ const Addsales = () => {
                     {inputs?.map((item, index) => {
                       let m_weight = item.req_weight / bottomSum;
                       m_weight = Math.ceil(m_weight * 100) / 100;
-                      let addDed = item["total_weight"] - m_weight;
+                      addDed = m_weight - item["total_weight"];
+                      console.log(item);
                       return (
                         <>
                           <div className="row" key={index}>
@@ -626,7 +638,11 @@ const Addsales = () => {
                               </h4>
                               <h4>
                                 Add/Deduct:{""}
-                                {addDed ? addDed.toFixed(2) : <></>}
+                                {addDed && addDed !== m_weight ? (
+                                  addDed.toFixed(2)
+                                ) : (
+                                  <></>
+                                )}
                               </h4>
                             </div>
                             <hr></hr>

@@ -76,8 +76,8 @@ const BrandList = () => {
     },
     {
       title: "GSM",
-      dataIndex: "raw_gsm",
-      sorter: (a, b) => a.raw_length.length - b.raw_length.length,
+      dataIndex: "gsm_product",
+      sorter: (a, b) => a.gsm_product.length - b.gsm_product.length,
     },
 
     {
