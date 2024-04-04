@@ -9627,3 +9627,8 @@ hr {
     max-width: max-content;
   }
 }
+:where(.css-dev-only-do-not-override-1ae8k9u).ant-table-wrapper
+  .ant-table-thead
+  th.ant-table-column-has-sorters {
+  z-index: 0;
+}

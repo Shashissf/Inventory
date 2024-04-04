@@ -10,11 +10,14 @@ import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import { Select } from "antd";
 import { useHistory } from "react-router-dom";
+import Modal from "react-modal";
 
 const SalesList = () => {
   const [orderList, setOrderList] = useState([]);
   const [filterData, setFilterData] = useState([]);
   const [defaultValue, setDefaultValue] = useState(null);
+  const [modalIsOpen, setIsOpen] = useState(false);
+  const [singleYieldData, setSingleYieldData] = useState({});
 
   const history = useHistory();
 
@@ -26,12 +29,43 @@ const SalesList = () => {
     { label: "Cancelled", value: "Cancelled" },
   ];
 
+  const customStyles = {
+    content: {
+      width: "40%",
+      height: "70%",
+      top: "50%",
+      left: "50%",
+      right: "auto",
+      bottom: "auto",
+      marginRight: "-50%",
+      transform: "translate(-50%, -50%)",
+    },
+    overlay: {
+      background: "#6c5a5669",
+    },
+  };
+
+  function openModal(record) {
+    console.log(record);
+    setSingleYieldData(record);
+    setIsOpen(true);
+  }
+
+  function afterOpenModal() {
+    // references are now sync'd and can be accessed.
+    // subtitle.style.color = "#f00";
+  }
+
+  function closeModal() {
+    setIsOpen(false);
+  }
+
   const columns = [
     {
       title: "Sl no",
       dataIndex: "key",
       render: (text, object, index) => index + 1,
-      sorter: (a, b) => a.key.length - b.key.length,
+      sorter: (a, b) => a.key - b.key,
     },
     // {
     //   title: "Order Id",
@@ -78,7 +112,6 @@ const SalesList = () => {
     {
       title: "R/M Status",
       dataIndex: "order_type",
-      // sorter: (a, b) => a.product_weight.length - b.product_weight.length,
     },
     {
       title: "Status",
@@ -96,6 +129,20 @@ const SalesList = () => {
         </>
       ),
       sorter: (a, b) => a.product_weight.length - b.product_weight.length,
+    },
+    {
+      title: "Yield",
+      dataIndex: "yield",
+      render: (text, record) => (
+        <>
+          <div>
+            <button onClick={() => openModal(record)}>
+              {record.actual_field_weight ? record.actual_field_weight : "100"}%
+            </button>
+          </div>
+        </>
+      ),
+      sorter: (a, b) => a.yield - b.yield,
     },
     {
       title: "Action",
@@ -229,7 +276,9 @@ const SalesList = () => {
     console.log(rawid);
 
     var confirmDelete;
-    if (confirm("Do you want to delete !!")) {
+    if (
+      confirm("Do you want to delete? This will re-add raw material stocks")
+    ) {
       confirmDelete = true;
     } else {
       confirmDelete = false;
@@ -282,6 +331,43 @@ const SalesList = () => {
 
   const handleDeductStock = (id) => {
     history.push(`edit-sales/${id}`);
+  };
+
+  const handleSubmit = async () => {
+    let actualFieldWeight = document.getElementById(
+      "actual_field_weight"
+    ).value;
+    let val =
+      (100 * Number(actualFieldWeight)) /
+      Number(singleYieldData.product_weight);
+    // console.log(actualFieldWeight, singleYieldData.product_weight, val);
+    console.log(val);
+    let data = {};
+    data["actual_field_weight"] = val;
+    data["_id"] = singleYieldData._id;
+    if (val) {
+      const config = {
+        headers: {
+          "Content-Type": "application/json",
+          token: token.token,
+        },
+      };
+      await axios
+        .put(`${API_URL}/order`, data, config)
+        .then((response) => {
+          console.log(response.data);
+          if (response.data?.result?.modifiedCount > 0) {
+            toast.success("Yield updated", {
+              position: toast.POSITION.TOP_CENTER,
+            });
+            setIsOpen(false);
+            fetchData();
+          }
+        })
+        .catch((error) => {
+          console.log(error);
+        });
+    }
   };
 
   return (
@@ -371,6 +457,38 @@ const SalesList = () => {
           {/* /product list */}
         </div>
       </div>
+      <Modal
+        isOpen={modalIsOpen}
+        onAfterOpen={afterOpenModal}
+        onRequestClose={closeModal}
+        style={customStyles}
+        contentLabel="Example Modal"
+      >
+        <div className="popup-style">
+          <h2>Actual Product Weight</h2>
+          <button className="close" onClick={closeModal}>
+            X
+          </button>
+        </div>
+        <hr></hr>
+
+        <div className="row">
+          <div className="col-lg-6 col-sm-6 col-12 form-group my-3">
+            <label>Actual Field Weight</label>
+
+            <input
+              type="number"
+              name="actual_field_weight"
+              id="actual_field_weight"
+              // value={actualFieldWeight.actual_field_weight}
+            />
+          </div>
+        </div>
+
+        <button className="btn btn-submit-disable me-2" onClick={handleSubmit}>
+          Submit
+        </button>
+      </Modal>
     </>
   );
 };
