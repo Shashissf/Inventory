@@ -31,10 +31,8 @@ const Header = () => {
   const history = useHistory();
 
   const logOut = () => {
-    setTimeout(() => {
-      localStorage.removeItem("items");
-      history.push("/signin");
-    }, 3000);
+    localStorage.removeItem("items");
+    history.push("/signin");
   };
 
   const handlesidebar = () => {
@@ -234,15 +232,10 @@ const Header = () => {
                   Settings
                 </Link> */}
                 <hr className="m-0" />
-                <Link className="dropdown-item logout pb-0" to="/signIn">
-                  <img
-                    src={Logout}
-                    onClick={logOut}
-                    className="me-2"
-                    alt="img"
-                  />
+                <div className="dropdown-item logout pb-0" onClick={logOut}>
+                  <img src={Logout} className="me-2" alt="img" />
                   Logout
-                </Link>
+                </div>
               </div>
             </div>
           </li>
@@ -259,13 +252,13 @@ const Header = () => {
             <i className="fa fa-ellipsis-v" />
           </Link>
           <div className="dropdown-menu dropdown-menu-right">
-            <Link className="dropdown-item" to="profile.html">
+            {/* <Link className="dropdown-item" to="profile.html">
               My Profile
             </Link>
             <Link className="dropdown-item" to="generalsettings.html">
               Settings
-            </Link>
-            <Link className="dropdown-item" to="signin.html">
+            </Link> */}
+            <Link className="dropdown-item" to="signin.html" onClick={logOut}>
               Logout
             </Link>
           </div>
