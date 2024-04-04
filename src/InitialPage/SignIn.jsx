@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { API_URL } from "../config";
 import {
   LoginImage,
@@ -24,6 +24,13 @@ const SignInPage = () => {
   };
 
   const history = useHistory();
+
+  const token = JSON.parse(localStorage.getItem("items"));
+  useEffect(() => {
+    if (token) {
+      history.push("/dream-pos/dashboard");
+    }
+  }, [token]);
 
   const handleChange = (e) => {
     e.preventDefault();
