@@ -364,7 +364,7 @@ const AddProduct = () => {
                           );
                         })}
                       </select>
-                      <span style={{ color: "red" }}>{message[index]}</span>
+                      <span>{message[index]}</span>
                     </div>
                     <div
                       className="col-lg-3 col-sm-3 col-12 form-group"
