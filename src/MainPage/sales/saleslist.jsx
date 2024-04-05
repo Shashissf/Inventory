@@ -136,7 +136,7 @@ const SalesList = () => {
       render: (text, record) => (
         <>
           <div>
-            <button onClick={() => openModal(record)}>
+            <button className="yield" onClick={() => openModal(record)}>
               {record.actual_field_weight ? record.actual_field_weight : "100"}%
             </button>
           </div>
@@ -474,7 +474,7 @@ const SalesList = () => {
 
         <div className="row">
           <div className="col-lg-6 col-sm-6 col-12 form-group my-3">
-            <label>Actual Field Weight</label>
+            <label>Actual Weight</label>
 
             <input
               type="number"

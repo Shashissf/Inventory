@@ -9632,3 +9632,12 @@ hr {
   th.ant-table-column-has-sorters {
   z-index: 0;
 }
+th.ant-table-cell.ant-table-column-has-sorters {
+  z-index: 0;
+}
+.yield {
+  border-radius: 5px;
+  border-width: 1px;
+  border-color: orange;
+  background: white;
+}
