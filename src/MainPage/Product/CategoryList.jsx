@@ -166,7 +166,7 @@ const CategoryList = () => {
                 className="btn btn-added"
               >
                 <img src={PlusIcon} alt="img" className="me-1" />
-                Add New Product
+                Add New Category
               </Link>
             </div>
           </div>
