@@ -312,9 +312,14 @@ const Addsales = () => {
       });
   };
 
-  const handleDeleteStock = (index, item) => {
+  const handleDeleteStock = () => {
     setStockDeduction([]);
-    item["total_weight"] = 0;
+    {
+      inputs?.map((item) => {
+        item.total_weight = 0;
+        return item;
+      });
+    }
   };
   return (
     <>

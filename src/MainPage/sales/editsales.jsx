@@ -196,7 +196,7 @@ const Editsales = () => {
     }
 
     const config = {
-      method: "POST",
+      method: "PUT",
       url: `${API_URL}/order`,
       headers: {
         "Content-Type": "application/json",
