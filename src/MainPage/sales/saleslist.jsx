@@ -137,7 +137,7 @@ const SalesList = () => {
         <>
           <div>
             <button className="yield" onClick={() => openModal(record)}>
-              {record.actual_field_weight ? record.actual_field_weight : "100"}%
+              {record.actual_field_weight ? Math.round(record.actual_field_weight * 100) / 100 : "100"}%
             </button>
           </div>
         </>

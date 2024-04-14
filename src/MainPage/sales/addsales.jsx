@@ -59,6 +59,8 @@ const Addsales = () => {
 
   const [inputs, setInputs] = useState([]);
   const [bottomSum, setBottomSum] = useState(0);
+  const [CalculateEnable, setCalculateEnable] = useState(false);
+
   const history = useHistory();
 
   const token = JSON.parse(localStorage.getItem("items"));
@@ -114,6 +116,9 @@ const Addsales = () => {
         // console.log(response.data.result);
         console.log(setInputs);
         let topSum = 0;
+        if(response.data?.result?.raw_required?.length>0){
+          setCalculateEnable(true)
+        }
         response.data?.result?.raw_required?.map((item) => {
           topSum = weight.product_weight * parseFloat(item.perunit_weight);
           setBottomSum((prevSum) => prevSum + item.perunit_weight);
@@ -381,7 +386,7 @@ const Addsales = () => {
                   </div>
 
                   <div className="col-lg-4 col-sm-4 col-12">
-                    <button className="btn btn-submit-disable me-2">
+                    <button disabled={CalculateEnable} className="btn btn-submit-disable me-2">
                       Calculate
                     </button>
                   </div>
@@ -399,12 +404,17 @@ const Addsales = () => {
                         key={index}
                       >
                         <label>Substrate {index + 1}</label>
-
-                        <select
+                        <input
+                            type="text"
+                            name="req_weight"
+                            value={item.substrate}
+                            disabled
+                          />
+                        {/* <select
                           name="substrate"
                           id={`raw_category${index}`}
                           className="cat"
-                          disabled
+                          // disabled
                           // onChange={(event) => handleCalChange(event, index)}
                         >
                           <option value={""}>Choose Raw Material</option>
@@ -426,7 +436,7 @@ const Addsales = () => {
                               </option>
                             );
                           })}
-                        </select>
+                        </select> */}
                       </div>
                       <div
                         className="col-lg-3 col-sm-3 col-12 form-group"
@@ -465,13 +475,14 @@ const Addsales = () => {
                   <button
                     className="btn btn-submit me-2"
                     onClick={() => handleSubmit("Non - Deducted")}
+                    disabled={!CalculateEnable}
                   >
                     Submit
                   </button>
                   <button className="btn btn-cancel" onClick={handleCancel}>
                     Cancel
                   </button>
-                  <button className="btn btn-submit mx-2" onClick={openModal}>
+                  <button disabled={!CalculateEnable} className="btn btn-submit mx-2" onClick={openModal}>
                     Submit and Deduct Stock
                   </button>
                   <Modal
