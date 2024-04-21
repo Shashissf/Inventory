@@ -33,6 +33,7 @@ const Editsales = () => {
   const [rawMaterial, setRawMaterial] = useState([]);
   const [stockDeduction, setStockDeduction] = useState([]);
   const [modalIsOpen, setIsOpen] = useState(false);
+  const [CalculateEnable, setCalculateEnable] = useState(false);
   // const [submitButDis, setSubmitButDis] = useState(true);
   let rawStockId = 1;
 
@@ -129,6 +130,7 @@ const Editsales = () => {
       .then((response) => {
         // console.log(response.data.result);
         console.log(setInputs);
+        setCalculateEnable(true)
         // setInputs(response.data.result.raw_required);
         let topSum = 0;
         response.data?.result?.raw_required?.map((item) => {
@@ -299,6 +301,9 @@ const Editsales = () => {
     }
     const groupedData = mergedArray.reduce((acc, curr) => {
       const { raw_id, ...rest } = curr;
+      if (!raw_id) {
+        return acc;
+      }
       if (!acc[raw_id]) {
         acc[raw_id] = [];
       }
@@ -406,7 +411,7 @@ const Editsales = () => {
                   </div>
 
                   <div className="col-lg-4 col-sm-4 col-12">
-                    <button className="btn btn-submit-disable me-2">
+                    <button disabled={CalculateEnable} className="btn btn-submit-disable me-2">
                       Calculate
                     </button>
                   </div>
@@ -425,8 +430,13 @@ const Editsales = () => {
                         key={index}
                       >
                         <label>Substrate {index + 1}</label>
-
-                        <select
+                        <input
+                            type="text"
+                            name="req_weight"
+                            value={item.substrate}
+                            disabled
+                          />
+                        {/* <select
                           name="substrate"
                           id={`raw_category${index}`}
                           className="cat"
@@ -452,7 +462,7 @@ const Editsales = () => {
                               </option>
                             );
                           })}
-                        </select>
+                        </select> */}
                       </div>
                       <div
                         className="col-lg-3 col-sm-3 col-12 form-group"
@@ -490,6 +500,7 @@ const Editsales = () => {
                 <div className="col-lg-12">
                   <button
                     className="btn btn-submit me-2"
+                    disabled={!CalculateEnable}
                     onClick={() => handleSubmit("Non - Deducted")}
                   >
                     Submit
@@ -497,7 +508,7 @@ const Editsales = () => {
                   <button className="btn btn-cancel" onClick={handleCancel}>
                     Cancel
                   </button>
-                  <button className="btn btn-submit mx-2" onClick={openModal}>
+                  <button disabled={!CalculateEnable} className="btn btn-submit mx-2" onClick={openModal}>
                     Submit and Deduct Stock
                   </button>
                   <Modal
@@ -525,8 +536,15 @@ const Editsales = () => {
                               key={index}
                             >
                               <label>Substrate {index + 1}</label>
-
-                              <select
+                              <input
+                                  type="text"
+                                  name="req_weight"
+                                  id={`req_weight${index}`}
+                                  value={item.substrate}
+                                  disabled
+                                />
+                              
+                              {/* <select
                                 name="substrate"
                                 id={`raw_category${index}`}
                                 className="cat"
@@ -553,7 +571,7 @@ const Editsales = () => {
                                     </option>
                                   );
                                 })}
-                              </select>
+                              </select> */}
                             </div>
                             <div
                               className="col-lg-2 col-sm-2 col-12 form-group my-3"
@@ -618,7 +636,7 @@ const Editsales = () => {
                               key={index}
                             >
                               <div className="form-group">
-                                <label>Add Weight</label>
+                                <label>Deduct Weight</label>
                                 <input
                                   type="text"
                                   name="manage_weight"
@@ -638,7 +656,7 @@ const Editsales = () => {
                                 id={`addplus${index}`}
                                 // disabled={plusButton}
                               >
-                                +
+                                -
                               </button>
                               <button
                                 onClick={() => handleDeleteStock(index, item)}

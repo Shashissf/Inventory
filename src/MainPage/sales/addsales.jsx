@@ -273,7 +273,6 @@ const Addsales = () => {
         mergedArray.push(subitem);
       });
     });
-    console.log(stockDeduction);
     for (const obj2 of stockDeduction) {
       const existingIndex = mergedArray.findIndex(
         (obj1) => obj1.batch_no === obj2.batch_no
@@ -285,15 +284,20 @@ const Addsales = () => {
         mergedArray.push(obj2);
       }
     }
+    console.log(mergedArray)
     const groupedData = mergedArray.reduce((acc, curr) => {
       const { raw_id, ...rest } = curr;
+      if(!raw_id){
+        return acc
+      }
       if (!acc[raw_id]) {
         acc[raw_id] = [];
       }
       delete rest.manage_weight;
       delete rest.id;
-      acc[raw_id].push(rest);
-      return acc;
+      console.log(raw_id,acc,"22311111111111111")
+        acc[raw_id].push(rest);
+        return acc
     }, {});
     console.log(groupedData);
     let data = { stockData: groupedData, order_type: "Deducted" };
@@ -306,6 +310,7 @@ const Addsales = () => {
       },
       data: data,
     };
+    console.log(data)
     await axios(config)
       .then((response) => {
         console.log(response.data);
@@ -512,8 +517,14 @@ const Addsales = () => {
                               key={index}
                             >
                               <label>Substrate {index + 1}</label>
-
-                              <select
+                              <input
+                                  type="text"
+                                  name="req_weight"
+                                  id={`req_weight${index}`}
+                                  value={item.substrate}
+                                  disabled
+                                />
+                              {/* <select
                                 name="substrate"
                                 id={`raw_category${index}`}
                                 className="cat"
@@ -540,7 +551,7 @@ const Addsales = () => {
                                     </option>
                                   );
                                 })}
-                              </select>
+                              </select> */}
                             </div>
                             <div
                               className="col-lg-2 col-sm-2 col-12 form-group my-3"
@@ -607,7 +618,7 @@ const Addsales = () => {
                               key={index}
                             >
                               <div className="form-group">
-                                <label>Add Weight</label>
+                                <label>Deduct Weight</label>
                                 <input
                                   type="text"
                                   name="manage_weight"
@@ -627,7 +638,7 @@ const Addsales = () => {
                                 id={`addplus${index}`}
                                 // disabled={plusButton}
                               >
-                                +
+                                -
                               </button>
                               <button
                                 onClick={() => handleDeleteStock(index, item)}
