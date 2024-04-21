@@ -105,7 +105,7 @@ const SalesList = () => {
       },
     },
     {
-      title: "Weight",
+      title: "Weight(KG)",
       dataIndex: "product_weight",
       sorter: (a, b) => a.product_weight.length - b.product_weight.length,
     },
@@ -114,7 +114,7 @@ const SalesList = () => {
       dataIndex: "order_type",
     },
     {
-      title: "Status",
+      title: "Order Status",
       dataIndex: "status",
       render: (text, record) => (
         <>
@@ -137,7 +137,10 @@ const SalesList = () => {
         <>
           <div>
             <button className="yield" onClick={() => openModal(record)}>
-              {record.actual_field_weight ? Math.round(record.actual_field_weight * 100) / 100 : "100"}%
+              {record.actual_field_weight
+                ? Math.round(record.actual_field_weight * 100) / 100
+                : "100"}
+              %
             </button>
           </div>
         </>

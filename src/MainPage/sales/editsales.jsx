@@ -35,6 +35,7 @@ const Editsales = () => {
   const [modalIsOpen, setIsOpen] = useState(false);
   const [CalculateEnable, setCalculateEnable] = useState(false);
   // const [submitButDis, setSubmitButDis] = useState(true);
+  var addDed = 0;
   let rawStockId = 1;
 
   function openModal() {
@@ -130,7 +131,7 @@ const Editsales = () => {
       .then((response) => {
         // console.log(response.data.result);
         console.log(setInputs);
-        setCalculateEnable(true)
+        setCalculateEnable(true);
         // setInputs(response.data.result.raw_required);
         let topSum = 0;
         response.data?.result?.raw_required?.map((item) => {
@@ -399,7 +400,7 @@ const Editsales = () => {
 
                   <div className="col-lg-3 col-sm-3 col-12">
                     <div className="form-group">
-                      <label>Product Weight</label>
+                      <label>Product Weight(KG)</label>
                       <input
                         type="number"
                         name="product_weight"
@@ -411,7 +412,10 @@ const Editsales = () => {
                   </div>
 
                   <div className="col-lg-4 col-sm-4 col-12">
-                    <button disabled={CalculateEnable} className="btn btn-submit-disable me-2">
+                    <button
+                      disabled={CalculateEnable}
+                      className="btn btn-submit-disable me-2"
+                    >
                       Calculate
                     </button>
                   </div>
@@ -431,11 +435,11 @@ const Editsales = () => {
                       >
                         <label>Substrate {index + 1}</label>
                         <input
-                            type="text"
-                            name="req_weight"
-                            value={item.substrate}
-                            disabled
-                          />
+                          type="text"
+                          name="req_weight"
+                          value={item.substrate}
+                          disabled
+                        />
                         {/* <select
                           name="substrate"
                           id={`raw_category${index}`}
@@ -469,7 +473,7 @@ const Editsales = () => {
                         key={index}
                       >
                         <div className="form-group">
-                          <label>Require Weight</label>
+                          <label>Require Weight(KG)</label>
                           <input
                             type="text"
                             name="req_weight"
@@ -483,7 +487,7 @@ const Editsales = () => {
                         key={index}
                       >
                         <div className="form-group">
-                          <label>Current Stock</label>
+                          <label>Current Stock(KG)</label>
                           <input
                             type="text"
                             name="current_stock"
@@ -508,7 +512,11 @@ const Editsales = () => {
                   <button className="btn btn-cancel" onClick={handleCancel}>
                     Cancel
                   </button>
-                  <button disabled={!CalculateEnable} className="btn btn-submit mx-2" onClick={openModal}>
+                  <button
+                    disabled={!CalculateEnable}
+                    className="btn btn-submit mx-2"
+                    onClick={openModal}
+                  >
                     Submit and Deduct Stock
                   </button>
                   <Modal
@@ -528,6 +536,7 @@ const Editsales = () => {
                     {inputs?.map((item, index) => {
                       let m_weight = item.req_weight / bottomSum;
                       m_weight = Math.ceil(m_weight * 100) / 100;
+                      addDed = m_weight - item["total_weight"];
                       return (
                         <>
                           <div className="row" key={index}>
@@ -537,13 +546,13 @@ const Editsales = () => {
                             >
                               <label>Substrate {index + 1}</label>
                               <input
-                                  type="text"
-                                  name="req_weight"
-                                  id={`req_weight${index}`}
-                                  value={item.substrate}
-                                  disabled
-                                />
-                              
+                                type="text"
+                                name="req_weight"
+                                id={`req_weight${index}`}
+                                value={item.substrate}
+                                disabled
+                              />
+
                               {/* <select
                                 name="substrate"
                                 id={`raw_category${index}`}
@@ -683,19 +692,29 @@ const Editsales = () => {
                             </div> */}
 
                             {/* <div className="body"> {JSON.stringify(inputs)} </div> */}
-                            <h4>
-                              Stock:{" "}
-                              {stockDeduction?.map((stockitem, index) => {
-                                if (stockitem?.raw_id === item?.raw_id) {
-                                  return (
-                                    <span key={index}>
-                                      {`${stockitem.batch_no} - ${stockitem.manage_weight}`}
-                                      {` `}+{` `}
-                                    </span>
-                                  );
-                                }
-                              })}
-                            </h4>
+                            <div className="stock-cal">
+                              <h4>
+                                Stock:{" "}
+                                {stockDeduction?.map((stockitem, index) => {
+                                  if (stockitem?.raw_id === item?.raw_id) {
+                                    return (
+                                      <span key={index}>
+                                        {`${stockitem.batch_no} - ${stockitem.manage_weight}`}
+                                        {` `}+{` `}
+                                      </span>
+                                    );
+                                  }
+                                })}
+                              </h4>
+                              <h4>
+                                Add/Deduct:{""}
+                                {addDed && addDed !== m_weight ? (
+                                  addDed.toFixed(2)
+                                ) : (
+                                  <></>
+                                )}
+                              </h4>
+                            </div>
                             <hr></hr>
                           </div>
                         </>

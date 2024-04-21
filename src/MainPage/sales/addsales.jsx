@@ -116,8 +116,8 @@ const Addsales = () => {
         // console.log(response.data.result);
         console.log(setInputs);
         let topSum = 0;
-        if(response.data?.result?.raw_required?.length>0){
-          setCalculateEnable(true)
+        if (response.data?.result?.raw_required?.length > 0) {
+          setCalculateEnable(true);
         }
         response.data?.result?.raw_required?.map((item) => {
           topSum = weight.product_weight * parseFloat(item.perunit_weight);
@@ -284,20 +284,20 @@ const Addsales = () => {
         mergedArray.push(obj2);
       }
     }
-    console.log(mergedArray)
+    console.log(mergedArray);
     const groupedData = mergedArray.reduce((acc, curr) => {
       const { raw_id, ...rest } = curr;
-      if(!raw_id){
-        return acc
+      if (!raw_id) {
+        return acc;
       }
       if (!acc[raw_id]) {
         acc[raw_id] = [];
       }
       delete rest.manage_weight;
       delete rest.id;
-      console.log(raw_id,acc,"22311111111111111")
-        acc[raw_id].push(rest);
-        return acc
+      console.log(raw_id, acc, "22311111111111111");
+      acc[raw_id].push(rest);
+      return acc;
     }, {});
     console.log(groupedData);
     let data = { stockData: groupedData, order_type: "Deducted" };
@@ -310,7 +310,7 @@ const Addsales = () => {
       },
       data: data,
     };
-    console.log(data)
+    console.log(data);
     await axios(config)
       .then((response) => {
         console.log(response.data);
@@ -380,7 +380,7 @@ const Addsales = () => {
 
                   <div className="col-lg-3 col-sm-3 col-12">
                     <div className="form-group">
-                      <label>Product Weight</label>
+                      <label>Product Weight(KG)</label>
                       <input
                         type="number"
                         name="product_weight"
@@ -391,7 +391,10 @@ const Addsales = () => {
                   </div>
 
                   <div className="col-lg-4 col-sm-4 col-12">
-                    <button disabled={CalculateEnable} className="btn btn-submit-disable me-2">
+                    <button
+                      disabled={CalculateEnable}
+                      className="btn btn-submit-disable me-2"
+                    >
                       Calculate
                     </button>
                   </div>
@@ -410,11 +413,11 @@ const Addsales = () => {
                       >
                         <label>Substrate {index + 1}</label>
                         <input
-                            type="text"
-                            name="req_weight"
-                            value={item.substrate}
-                            disabled
-                          />
+                          type="text"
+                          name="req_weight"
+                          value={item.substrate}
+                          disabled
+                        />
                         {/* <select
                           name="substrate"
                           id={`raw_category${index}`}
@@ -448,7 +451,7 @@ const Addsales = () => {
                         key={index}
                       >
                         <div className="form-group">
-                          <label>Require Weight</label>
+                          <label>Require Weight(KG)</label>
                           <input
                             type="text"
                             name="req_weight"
@@ -462,7 +465,7 @@ const Addsales = () => {
                         key={index}
                       >
                         <div className="form-group">
-                          <label>Current Stock</label>
+                          <label>Current Stock(KG)</label>
                           <input
                             type="text"
                             name="current_stock"
@@ -487,7 +490,11 @@ const Addsales = () => {
                   <button className="btn btn-cancel" onClick={handleCancel}>
                     Cancel
                   </button>
-                  <button disabled={!CalculateEnable} className="btn btn-submit mx-2" onClick={openModal}>
+                  <button
+                    disabled={!CalculateEnable}
+                    className="btn btn-submit mx-2"
+                    onClick={openModal}
+                  >
                     Submit and Deduct Stock
                   </button>
                   <Modal
@@ -518,12 +525,12 @@ const Addsales = () => {
                             >
                               <label>Substrate {index + 1}</label>
                               <input
-                                  type="text"
-                                  name="req_weight"
-                                  id={`req_weight${index}`}
-                                  value={item.substrate}
-                                  disabled
-                                />
+                                type="text"
+                                name="req_weight"
+                                id={`req_weight${index}`}
+                                value={item.substrate}
+                                disabled
+                              />
                               {/* <select
                                 name="substrate"
                                 id={`raw_category${index}`}

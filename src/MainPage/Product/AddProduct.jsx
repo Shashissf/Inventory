@@ -46,7 +46,8 @@ const AddProduct = () => {
     setProductDetails({ ...productDetails, [name]: value });
   };
 
-  const handleSubmit = async () => {
+  const handleSubmit = async (e) => {
+    e.preventDefault();
     let product_category = document.getElementById("product_category");
     console.log(product_category.value);
     productDetails["product_category"] = product_category.value;
@@ -272,172 +273,177 @@ const AddProduct = () => {
           {/* /add */}
           <div className="card">
             <div className="card-body">
-              <div className="row">
-                <div className="col-lg-6 col-sm-6 col-12">
-                  <div className="form-group">
-                    <label>Product Name</label>
-                    <input
-                      type="text"
-                      name="product_name"
-                      onChange={handleChange}
-                    />
+              <form onSubmit={handleSubmit}>
+                <div className="row">
+                  <div className="col-lg-6 col-sm-6 col-12">
+                    <div className="form-group">
+                      <label>Product Name*</label>
+                      <input
+                        type="text"
+                        name="product_name"
+                        onChange={handleChange}
+                        required
+                      />
+                    </div>
                   </div>
-                </div>
-                <div className="col-lg-6 col-sm-6 col-12">
-                  <div className="form-group">
-                    <label>Category</label>
-                    <select
-                      name="product_category"
-                      id="product_category"
-                      className="cat"
-                    >
-                      {categoryList?.map((item) => {
-                        return (
-                          <option value={item._id} key={item._id}>
-                            {item.categoryName}
-                          </option>
-                        );
-                      })}
-                    </select>
-                  </div>
-                </div>
-                <div className="col-lg-6 col-sm-6 col-12">
-                  <div className="form-group">
-                    <label>Product Length</label>
-                    <input
-                      type="number"
-                      name="product_length"
-                      onChange={handleChange}
-                    />
-                  </div>
-                </div>
-                <div className="col-lg-6 col-sm-6 col-12">
-                  <div className="form-group">
-                    <label>Product Width</label>
-                    <input
-                      type="number"
-                      name="product_width"
-                      onChange={handleChange}
-                    />
-                  </div>
-                </div>
-                <div className="col-lg-6 col-sm-6 col-12">
-                  <div className="form-group">
-                    <label>Repeat in Width</label>
-                    <input
-                      type="number"
-                      name="repeat_width"
-                      onChange={handleChange}
-                    />
-                  </div>
-                </div>
-                <h6 className="pb-3">Raw Material requirements - </h6>
-                {inputs?.map((item, index) => (
-                  <>
-                    <div
-                      className="col-lg-3 col-sm-3 col-12 form-group"
-                      key={index}
-                    >
-                      <label>Substrate {index + 1}</label>
+                  <div className="col-lg-6 col-sm-6 col-12">
+                    <div className="form-group">
+                      <label>Category*</label>
                       <select
-                        name="substrate"
-                        id={`raw_category${index}`}
+                        name="product_category"
+                        id="product_category"
                         className="cat"
-                        onChange={(event) => handleCalChange(event, index)}
+                        required
                       >
-                        <option value={""}>Choose Raw Material</option>
-                        {rawMaterial?.map((items) => {
-                          var selected = false;
-                          item.substrate ===
-                          `${items.raw_name} - G : ${items.raw_gauge} | W : ${items.raw_length} | GSM : ${items.raw_gsm}`
-                            ? (selected = true)
-                            : (selected = false);
+                        {categoryList?.map((item) => {
                           return (
-                            <option
-                              selected={selected}
-                              value={items._id}
-                              key={items._id}
-                            >
-                              {items.raw_name} - G : {items.raw_gauge} | W :{" "}
-                              {items.raw_length} | GSM : {items.raw_gsm}
+                            <option value={item._id} key={item._id}>
+                              {item.categoryName}
                             </option>
                           );
                         })}
                       </select>
-                      <span>{message[index]}</span>
                     </div>
-                    <div
-                      className="col-lg-3 col-sm-3 col-12 form-group"
-                      key={index}
-                    >
-                      <div className="form-group">
-                        <label>Flat Size (sq mm)</label>
-                        <input
-                          type="text"
-                          name="flat_size"
+                  </div>
+                  <div className="col-lg-6 col-sm-6 col-12">
+                    <div className="form-group">
+                      <label>Product Length*(mm)</label>
+                      <input
+                        type="number"
+                        name="product_length"
+                        onChange={handleChange}
+                        required
+                      />
+                    </div>
+                  </div>
+                  <div className="col-lg-6 col-sm-6 col-12">
+                    <div className="form-group">
+                      <label>Product Width*(mm)</label>
+                      <input
+                        type="number"
+                        name="product_width"
+                        onChange={handleChange}
+                        required
+                      />
+                    </div>
+                  </div>
+                  <div className="col-lg-6 col-sm-6 col-12">
+                    <div className="form-group">
+                      <label>Repeat in Width*</label>
+                      <input
+                        type="number"
+                        name="repeat_width"
+                        onChange={handleChange}
+                        required
+                      />
+                    </div>
+                  </div>
+                  <h6 className="pb-3">Raw Material requirements - </h6>
+                  {inputs?.map((item, index) => (
+                    <>
+                      <div
+                        className="col-lg-3 col-sm-3 col-12 form-group"
+                        key={index}
+                      >
+                        <label>Substrate {index + 1}</label>
+                        <select
+                          name="substrate"
+                          id={`raw_category${index}`}
+                          className="cat"
                           onChange={(event) => handleCalChange(event, index)}
-                          value={item.flat_size}
-                          disabled
-                        />
+                          required
+                        >
+                          <option value={""}>Choose Raw Material</option>
+                          {rawMaterial?.map((items) => {
+                            var selected = false;
+                            item.substrate ===
+                            `${items.raw_name} - G : ${items.raw_gauge} | W : ${items.raw_length} | GSM : ${items.raw_gsm}`
+                              ? (selected = true)
+                              : (selected = false);
+                            return (
+                              <option
+                                selected={selected}
+                                value={items._id}
+                                key={items._id}
+                              >
+                                {items.raw_name} - G : {items.raw_gauge} | W :{" "}
+                                {items.raw_length} | GSM : {items.raw_gsm}
+                              </option>
+                            );
+                          })}
+                        </select>
+                        <span>{message[index]}</span>
                       </div>
-                    </div>
-                    <div
-                      className="col-lg-3 col-sm-3 col-12 form-group"
-                      key={index}
-                    >
-                      <div className="form-group">
-                        <label>Per Unit Weight (gram)</label>
-                        <input
-                          type="text"
-                          name="perunit_weight"
-                          onChange={(event) => handleCalChange(event, index)}
-                          value={item.perunit_weight}
-                          disabled
-                        />
+                      <div
+                        className="col-lg-3 col-sm-3 col-12 form-group"
+                        key={index}
+                      >
+                        <div className="form-group">
+                          <label>Flat Size (sq mm)</label>
+                          <input
+                            type="text"
+                            name="flat_size"
+                            onChange={(event) => handleCalChange(event, index)}
+                            value={item.flat_size}
+                            disabled
+                          />
+                        </div>
                       </div>
-                    </div>
-                    <div
-                      className="col-lg-2 col-sm-2 col-12 form-group"
-                      key={index}
-                    >
-                      {index === 0 && <label>Action</label>}
-                      {index > 0 && <label>&nbsp;</label>}
-                      <div className="d-flex">
-                        {index === inputs.length - 1 && (
-                          <button
-                            className="addplus"
-                            onClick={() => handleAddInput()}
-                          >
-                            +
-                          </button>
-                        )}
-                        {index === inputs.length - 1 && index > 0 && (
-                          <>
+                      <div
+                        className="col-lg-3 col-sm-3 col-12 form-group"
+                        key={index}
+                      >
+                        <div className="form-group">
+                          <label>Per Unit Weight (gram)</label>
+                          <input
+                            type="text"
+                            name="perunit_weight"
+                            onChange={(event) => handleCalChange(event, index)}
+                            value={item.perunit_weight}
+                            disabled
+                          />
+                        </div>
+                      </div>
+                      <div
+                        className="col-lg-2 col-sm-2 col-12 form-group"
+                        key={index}
+                      >
+                        {index === 0 && <label>Action</label>}
+                        {index > 0 && <label>&nbsp;</label>}
+                        <div className="d-flex">
+                          {index === inputs.length - 1 && (
                             <button
-                              className="reset mx-3"
-                              onClick={() => handleDeleteInput(index)}
+                              className="addplus"
+                              onClick={() => handleAddInput()}
                             >
-                              <img src={reset} />
+                              +
                             </button>
-                          </>
-                        )}
+                          )}
+                          {index === inputs.length - 1 && index > 0 && (
+                            <>
+                              <button
+                                className="reset mx-3"
+                                onClick={() => handleDeleteInput(index)}
+                              >
+                                <img src={reset} />
+                              </button>
+                            </>
+                          )}
+                        </div>
                       </div>
-                    </div>
-                    {/* <div className="body"> {JSON.stringify(inputs)} </div> */}
-                  </>
-                ))}
-                <div className="col-lg-12">
-                  <button
-                    className="btn btn-submit me-2"
-                    onClick={handleSubmit}
-                  >
-                    Submit
-                  </button>
-                  <button className="btn btn-cancel" onClick={handleCancel}>
-                    Cancel
-                  </button>
+                      {/* <div className="body"> {JSON.stringify(inputs)} </div> */}
+                    </>
+                  ))}
+                  <div className="col-lg-12">
+                    <button type="submit" className="btn btn-submit me-2">
+                      Submit
+                    </button>
+                    <button className="btn btn-cancel" onClick={handleCancel}>
+                      Cancel
+                    </button>
+                  </div>
                 </div>
-              </div>
+              </form>
             </div>
           </div>
           {/* /add */}

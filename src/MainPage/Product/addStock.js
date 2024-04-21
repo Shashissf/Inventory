@@ -98,80 +98,83 @@ const AddStock = () => {
         {/* /add */}
         <div className="card">
           <div className="card-body">
-            <div className="row">
-              {inputs?.map((item, index) => (
-                <>
-                  <div
-                    className="col-lg-3 col-sm-3 col-12 form-group"
-                    key={index}
-                  >
-                    <label>Batch no</label>
-                    <input
-                      name="batch_no"
-                      type="text"
-                      value={item.batch_no}
-                      onChange={(event) => handleChange(event, index)}
-                    />
-                  </div>
-                  <div
-                    className="col-lg-3 col-sm-3 col-12 form-group"
-                    key={index}
-                  >
-                    <label>Weight</label>
-                    <input
-                      name="stock_weight"
-                      type="number"
-                      value={item.stock_weight}
-                      onChange={(event) => handleChange(event, index)}
-                    />
-                  </div>
-                  <div
-                    className="col-lg-3 col-sm-3 col-12 form-group"
-                    key={index}
-                  >
-                    <label>Date</label>
-                    <input
-                      name="date"
-                      type="date"
-                      value={item.date}
-                      onChange={(event) => handleChange(event, index)}
-                    />
-                  </div>
-                  <div
-                    className="col-lg-2 col-sm-2 col-12 form-group"
-                    key={index}
-                  >
-                    <label>Action</label>
-                    {inputs.length > 1 && (
-                      <button
-                        className="delplus"
-                        onClick={() => handleDeleteInput(index)}
-                      >
-                        -
-                      </button>
-                    )}
-                    {index === inputs.length - 1 && (
-                      <button
-                        className="addplus"
-                        onClick={() => handleAddInput()}
-                      >
-                        +
-                      </button>
-                    )}
-                  </div>
-                  {/* <div className="body"> {JSON.stringify(inputs)} </div> */}
-                </>
-              ))}
+            <form onClick={handleSubmit}>
+              <div className="row">
+                {inputs?.map((item, index) => (
+                  <>
+                    <div
+                      className="col-lg-3 col-sm-3 col-12 form-group"
+                      key={index}
+                    >
+                      <label>Batch no*</label>
+                      <input
+                        name="batch_no"
+                        type="text"
+                        value={item.batch_no}
+                        onChange={(event) => handleChange(event, index)}
+                        required
+                      />
+                    </div>
+                    <div
+                      className="col-lg-3 col-sm-3 col-12 form-group"
+                      key={index}
+                    >
+                      <label>Weight(KG)</label>
+                      <input
+                        name="stock_weight"
+                        type="number"
+                        value={item.stock_weight}
+                        onChange={(event) => handleChange(event, index)}
+                      />
+                    </div>
+                    <div
+                      className="col-lg-3 col-sm-3 col-12 form-group"
+                      key={index}
+                    >
+                      <label>Date</label>
+                      <input
+                        name="date"
+                        type="date"
+                        value={item.date}
+                        onChange={(event) => handleChange(event, index)}
+                      />
+                    </div>
+                    <div
+                      className="col-lg-2 col-sm-2 col-12 form-group"
+                      key={index}
+                    >
+                      <label>Action</label>
+                      {inputs.length > 1 && (
+                        <button
+                          className="delplus"
+                          onClick={() => handleDeleteInput(index)}
+                        >
+                          -
+                        </button>
+                      )}
+                      {index === inputs.length - 1 && (
+                        <button
+                          className="addplus"
+                          onClick={() => handleAddInput()}
+                        >
+                          +
+                        </button>
+                      )}
+                    </div>
+                    {/* <div className="body"> {JSON.stringify(inputs)} </div> */}
+                  </>
+                ))}
 
-              <div className="col-lg-12">
-                <button className="btn btn-submit me-2" onClick={handleSubmit}>
-                  Submit
-                </button>
-                <button className="btn btn-cancel" onClick={handleCancel}>
-                  Cancel
-                </button>
+                <div className="col-lg-12">
+                  <button type="submit" className="btn btn-submit me-2">
+                    Submit
+                  </button>
+                  <button className="btn btn-cancel" onClick={handleCancel}>
+                    Cancel
+                  </button>
+                </div>
               </div>
-            </div>
+            </form>
           </div>
         </div>
         {/* /add */}

@@ -91,114 +91,103 @@ const AddBrand = () => {
           {/* /add */}
           <div className="card">
             <div className="card-body">
-              <div className="row">
-                <div className="col-lg-3 col-sm-6 col-12">
-                  <div className="form-group">
-                    <label>Name</label>
-                    <input
-                      type="text"
-                      name="raw_name"
-                      onChange={handleChange}
-                    />
+              <form onSubmit={handleSubmit}>
+                <div className="row">
+                  <div className="col-lg-3 col-sm-6 col-12">
+                    <div className="form-group">
+                      <label>Name*</label>
+                      <input
+                        type="text"
+                        name="raw_name"
+                        onChange={handleChange}
+                        required
+                      />
+                    </div>
                   </div>
-                </div>
-                {/* <div className="col-lg-3 col-sm-6 col-12">
-                  <div className="form-group">
-                    <label>SKU</label>
-                    <input type="text" name="raw_sku" onChange={handleChange} />
+                  <div className="col-lg-3 col-sm-6 col-12">
+                    <div className="form-group">
+                      <label>Category*</label>
+                      <select
+                        name="raw_category"
+                        id="raw_category"
+                        className="cat"
+                        required
+                      >
+                        {categoryList?.map((item) => {
+                          return (
+                            <option value={item._id} key={item._id}>
+                              {item.categoryName}
+                            </option>
+                          );
+                        })}
+                      </select>
+                    </div>
                   </div>
-                </div> */}
-                <div className="col-lg-3 col-sm-6 col-12">
-                  <div className="form-group">
-                    <label>Category</label>
-                    <select
-                      name="raw_category"
-                      id="raw_category"
-                      className="cat"
-                    >
-                      {categoryList?.map((item) => {
-                        return (
-                          <option value={item._id} key={item._id}>
-                            {item.categoryName}
-                          </option>
-                        );
-                      })}
-                    </select>
+                  <div className="col-lg-3 col-sm-6 col-12">
+                    <div className="form-group">
+                      <label>Gauge*</label>
+                      <input
+                        type="number"
+                        id="raw_gauge"
+                        name="raw_gauge"
+                        onChange={handleChange}
+                        required
+                      />
+                    </div>
                   </div>
-                </div>
-                <div className="col-lg-3 col-sm-6 col-12">
-                  <div className="form-group">
-                    <label>Gauge</label>
-                    <input
-                      type="number"
-                      id="raw_gauge"
-                      name="raw_gauge"
-                      onChange={handleChange}
-                    />
+                  <div className="col-lg-3 col-sm-6 col-12">
+                    <div className="form-group">
+                      <label>Width*(mm)</label>
+                      <input
+                        type="number"
+                        name="raw_length"
+                        onChange={handleChange}
+                        required
+                      />
+                    </div>
                   </div>
-                </div>
-                {/* <div className="col-lg-3 col-sm-6 col-12">
-                  <div className="form-group">
-                    <label>Weight</label>
-                    <input
-                      type="number"
-                      name="raw_weight"
-                      onChange={handleChange}
-                    />
+                  <div className="col-lg-3 col-sm-6 col-12">
+                    <div className="form-group">
+                      <label>Get GSM*</label>
+                      <input
+                        type="number"
+                        id="raw_gsm"
+                        name="raw_gsm"
+                        onChange={handleChange}
+                        required
+                      />
+                    </div>
                   </div>
-                </div> */}
-                <div className="col-lg-3 col-sm-6 col-12">
-                  <div className="form-group">
-                    <label>Width (mm)</label>
-                    <input
-                      type="number"
-                      name="raw_length"
-                      onChange={handleChange}
-                    />
+                  <div className="col-lg-3 col-sm-6 col-12">
+                    <div className="form-group">
+                      <label>Stock Quantity Alert*(KG)</label>
+                      <input
+                        type="number"
+                        name="quantity_alert"
+                        onChange={handleChange}
+                        required
+                      />
+                    </div>
                   </div>
-                </div>
-                <div className="col-lg-3 col-sm-6 col-12">
-                  <div className="form-group">
-                    <label>Get GSM</label>
-                    <input
-                      type="number"
-                      id="raw_gsm"
-                      name="raw_gsm"
-                      onChange={handleChange}
-                    />
-                  </div>
-                </div>
-                <div className="col-lg-3 col-sm-6 col-12">
-                  <div className="form-group">
-                    <label>Stock Quantity Alert (KG)</label>
-                    <input
-                      type="number"
-                      name="quantity_alert"
-                      onChange={handleChange}
-                    />
-                  </div>
-                </div>
 
-                <hr></hr>
+                  <hr></hr>
 
-                <h6 className="pb-3">
-                  GSM of the Product -{" "}
-                  {addRawMaterial?.raw_gsm * addRawMaterial?.raw_gauge
-                    ? addRawMaterial?.raw_gsm * addRawMaterial?.raw_gauge
-                    : 0}
-                </h6>
-                <div className="col-lg-12">
-                  <button
-                    className="btn btn-submit me-2"
-                    onClick={handleSubmit}
-                  >
-                    Submit
-                  </button>
-                  <button className="btn btn-cancel" onClick={handleCancel}>
-                    Cancel
-                  </button>
+                  <h6 className="pb-3">
+                    GSM of the Product -{" "}
+                    {addRawMaterial?.raw_gsm * addRawMaterial?.raw_gauge
+                      ? addRawMaterial?.raw_gsm * addRawMaterial?.raw_gauge
+                      : 0}
+                  </h6>
+                  <div className="col-lg-12">
+                    <button type="submit" className="btn btn-submit me-2">
+                      Submit
+                    </button>
+                    <button className="btn btn-cancel" onClick={handleCancel}>
+                      Cancel
+                    </button>
+                  </div>
                 </div>
-              </div>
+              </form>
             </div>
           </div>
           {/* /add */}
