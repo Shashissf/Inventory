@@ -9626,6 +9626,16 @@ hr {
   .ant-table-cell img {
     max-width: max-content;
   }
+  .searchfield {
+    width: 200px !important;
+  }
+  .ReactModal__Content.ReactModal__Content--after-open {
+    width: 100% !important;
+  }
+  table.orderDetails td {
+    font-size: 18px;
+    border: 1px solid #8b8484;
+  }
 }
 :where(.css-dev-only-do-not-override-1ae8k9u).ant-table-wrapper
   .ant-table-thead
@@ -9640,4 +9650,13 @@ th.ant-table-cell.ant-table-column-has-sorters {
   border-width: 1px;
   border-color: orange;
   background: white;
+}
+table.orderDetails {
+  font-size: 18px;
+  border: 1px solid #d7d1d1;
+  width: 100%;
+}
+table.orderDetails td {
+  font-size: 18px;
+  border: 1px solid #d7d1d1;
 }

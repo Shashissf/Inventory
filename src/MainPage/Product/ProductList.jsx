@@ -180,6 +180,7 @@ const ProductList = () => {
                           <input
                             type="text"
                             name="changedrop"
+                            className="searchfield"
                             placeholder="Search by Category...."
                             onChange={handleSearchCategory}
                           />

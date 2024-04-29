@@ -180,7 +180,7 @@ const CategoryList = () => {
                       <div className="col-lg-4 col-sm-4 col-4">
                         <div className="form-group">
                           <select
-                            className="select"
+                            className="select searchfield"
                             name="changedrop"
                             onChange={handleDropdown}
                           >

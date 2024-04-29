@@ -220,6 +220,7 @@ const BrandList = () => {
                           <input
                             type="text"
                             name="changedrop"
+                            className="searchfield"
                             placeholder="Search by Name...."
                             onChange={handleSearchCategory}
                           />

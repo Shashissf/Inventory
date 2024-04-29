@@ -18,6 +18,7 @@ const SalesList = () => {
   const [defaultValue, setDefaultValue] = useState(null);
   const [modalIsOpen, setIsOpen] = useState(false);
   const [singleYieldData, setSingleYieldData] = useState({});
+  const [orderData, setOrderData] = useState({});
 
   const history = useHistory();
 
@@ -44,12 +45,47 @@ const SalesList = () => {
       background: "#6c5a5669",
     },
   };
+  const customOrderStyles = {
+    content: {
+      width: "60%",
+      height: "70%",
+      top: "50%",
+      left: "50%",
+      right: "auto",
+      bottom: "auto",
+      marginRight: "-50%",
+      transform: "translate(-50%, -50%)",
+    },
+    overlay: {
+      background: "#6c5a5669",
+    },
+  };
 
-  function openModal(record) {
+  function openModal(data, record) {
     console.log(record);
     setSingleYieldData(record);
-    setIsOpen(true);
+    getSingleOrderDetails(record);
+    setIsOpen(data);
   }
+
+  const getSingleOrderDetails = async (id) => {
+    const config = {
+      method: "GET",
+      url: `${API_URL}/order/${id}`,
+      headers: {
+        "Content-Type": "application/json",
+        token: token.token,
+      },
+    };
+    await axios(config)
+      .then((response) => {
+        console.log(response.data);
+        setOrderData(response.data.result);
+      })
+      .catch((error) => {
+        console.log(error);
+      });
+  };
 
   function afterOpenModal() {
     // references are now sync'd and can be accessed.
@@ -75,13 +111,26 @@ const SalesList = () => {
     {
       title: "Customer Name",
       dataIndex: "customername",
+      render: (text, record) => (
+        <div
+          className="productimgname"
+          onClick={() => openModal("orderDetails", record._id)}
+        >
+          {record.customername}
+        </div>
+      ),
       sorter: (a, b) => a.customername.length - b.customername.length,
     },
     {
       title: "Product Name",
       dataIndex: "product_name",
       render: (text, record) => (
-        <div className="productimgname">{record.product_name}</div>
+        <div
+          className="productimgname"
+          onClick={() => openModal("orderDetails", record._id)}
+        >
+          {record.product_name}
+        </div>
       ),
       sorter: (a, b) => a.product_name.length - b.product_name.length,
       ellipsis: true,
@@ -136,7 +185,10 @@ const SalesList = () => {
       render: (text, record) => (
         <>
           <div>
-            <button className="yield" onClick={() => openModal(record)}>
+            <button
+              className="yield"
+              onClick={() => openModal("yield", record)}
+            >
               {record.actual_field_weight
                 ? Math.round(record.actual_field_weight * 100) / 100
                 : "100"}
@@ -372,6 +424,11 @@ const SalesList = () => {
         });
     }
   };
+  const getNewDate = (date) => {
+    var timestamp = Number(new Date(date));
+    var gdate = new Date(timestamp).toDateString();
+    return gdate;
+  };
 
   return (
     <>
@@ -461,7 +518,7 @@ const SalesList = () => {
         </div>
       </div>
       <Modal
-        isOpen={modalIsOpen}
+        isOpen={modalIsOpen === "yield"}
         onAfterOpen={afterOpenModal}
         onRequestClose={closeModal}
         style={customStyles}
@@ -491,6 +548,93 @@ const SalesList = () => {
         <button className="btn btn-submit-disable me-2" onClick={handleSubmit}>
           Submit
         </button>
+      </Modal>
+      <Modal
+        isOpen={modalIsOpen === "orderDetails"}
+        onAfterOpen={afterOpenModal}
+        onRequestClose={closeModal}
+        style={customOrderStyles}
+        contentLabel="Example Modal"
+      >
+        <div className="popup-style">
+          <h2>Order Details</h2>
+          <button className="close" onClick={closeModal}>
+            X
+          </button>
+        </div>
+        <hr></hr>
+
+        <div className="row">
+          <div className="col-lg-6 col-sm-6 col-12 form-group my-3">
+            <h4>
+              <strong>Customer Name</strong> : {orderData.customername}
+            </h4>
+            <h4>
+              <strong>Order Date</strong> :{" "}
+              {orderData?.Date && getNewDate(orderData?.Date)}
+            </h4>
+            <h4>
+              <strong>Raw Material Status</strong> : {orderData.order_type}
+            </h4>
+          </div>
+          <div className="col-lg-6 col-sm-6 col-12 form-group my-3">
+            <h4>
+              <strong>Product Name</strong> : {orderData.product_name}
+            </h4>
+            <h4>
+              <strong>Weight</strong> : {orderData.product_weight}
+            </h4>
+            <h4>
+              <strong>Order Status</strong> : {orderData.status}
+            </h4>
+          </div>
+          <div className="col-lg-12 col-sm-12 col-12 form-group my-3">
+            <h4>
+              <strong>Raw Materials</strong> :
+            </h4>
+            <table className="orderDetails">
+              <tr>
+                <td>Name</td>
+                <td>Required Weight</td>
+                <td>Stock Deduction</td>
+              </tr>
+
+              {orderData?.raw_required?.map((item, index) => {
+                return (
+                  <>
+                    <tr>
+                      <td key={index}>{item.substrate}</td>
+                      <td key={index}>{item.req_weight}</td>
+                      <td key={index}></td>
+                    </tr>
+                  </>
+                );
+              })}
+            </table>
+          </div>
+          <div className="d-flex">
+            {orderData.order_type === "Non - Deducted" && (
+              <>
+                <button
+                  style={{ width: "200px" }}
+                  onClick={() => handleDeductStock(orderData._id)}
+                  className="btn btn-submit-disable me-2"
+                  // disabled={submitButDis}
+                >
+                  Deduct Stock
+                </button>
+              </>
+            )}
+            <div>
+              <Select
+                style={{ width: "200px", height: "45px", border: "2px solid" }}
+                onChange={(e) => handleStatus(e, orderData)}
+                value={{ label: orderData.status, value: orderData.status }}
+                options={options}
+              />
+            </div>
+          </div>
+        </div>
       </Modal>
     </>
   );
