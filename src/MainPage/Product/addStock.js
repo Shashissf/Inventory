@@ -32,11 +32,8 @@ const AddStock = () => {
   const handleChange = (event, index) => {
     let { name, value } = event.target;
     let onChangeValue = [...inputs];
-    if (name == "stock_weight") {
-      onChangeValue[index][name] = Number(value);
-    } else {
-      onChangeValue[index][name] = value;
-    }
+
+    onChangeValue[index][name] = value;
     setInputs(onChangeValue);
   };
 
@@ -58,7 +55,7 @@ const AddStock = () => {
     data["raw_length"] = location.state.raw_length;
     data["raw_weight"] = location.state.raw_weight;
     data["raw_category"] = location.state.raw_category?._id;
-    console.log(data);
+    // console.log(data);
 
     const config = {
       method: "PUT",
@@ -98,7 +95,7 @@ const AddStock = () => {
         {/* /add */}
         <div className="card">
           <div className="card-body">
-            <form onClick={handleSubmit}>
+            <form onSubmit={handleSubmit}>
               <div className="row">
                 {inputs?.map((item, index) => (
                   <>

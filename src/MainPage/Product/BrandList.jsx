@@ -77,6 +77,11 @@ const BrandList = () => {
     {
       title: "GSM",
       dataIndex: "gsm_product",
+      render: (text, record) => (
+        <>
+          <span>{truncateDecimal(record.gsm_product, 2)}</span>
+        </>
+      ),
       sorter: (a, b) => a.gsm_product.length - b.gsm_product.length,
     },
 
@@ -108,6 +113,12 @@ const BrandList = () => {
       ),
     },
   ];
+
+  function truncateDecimal(number, decimalPlaces) {
+    const multiplier = Math.pow(10, decimalPlaces);
+    const truncatedNumber = Math.floor(number * multiplier) / multiplier;
+    return truncatedNumber;
+  }
 
   const token = JSON.parse(localStorage.getItem("items"));
   useEffect(() => {

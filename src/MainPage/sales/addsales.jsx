@@ -94,6 +94,10 @@ const Addsales = () => {
 
   const handleChange = (e) => {
     let { name, value } = e.target;
+    if (name === "product_name") {
+      setCalculateEnable(false);
+      setInputs([]);
+    }
     setweight({ ...weight, [name]: value });
   };
 

@@ -567,25 +567,25 @@ const SalesList = () => {
         <div className="row">
           <div className="col-lg-6 col-sm-6 col-12 form-group my-3">
             <h4>
-              <strong>Customer Name</strong> : {orderData.customername}
+              <strong>Customer Name</strong> : {orderData?.customername}
             </h4>
             <h4>
               <strong>Order Date</strong> :{" "}
               {orderData?.Date && getNewDate(orderData?.Date)}
             </h4>
             <h4>
-              <strong>Raw Material Status</strong> : {orderData.order_type}
+              <strong>Raw Material Status</strong> : {orderData?.order_type}
             </h4>
           </div>
           <div className="col-lg-6 col-sm-6 col-12 form-group my-3">
             <h4>
-              <strong>Product Name</strong> : {orderData.product_name}
+              <strong>Product Name</strong> : {orderData?.product_name}
             </h4>
             <h4>
-              <strong>Weight</strong> : {orderData.product_weight}
+              <strong>Weight</strong> : {orderData?.product_weight}
             </h4>
             <h4>
-              <strong>Order Status</strong> : {orderData.status}
+              <strong>Order Status</strong> : {orderData?.status}
             </h4>
           </div>
           <div className="col-lg-12 col-sm-12 col-12 form-group my-3">
@@ -613,7 +613,7 @@ const SalesList = () => {
             </table>
           </div>
           <div className="d-flex">
-            {orderData.order_type === "Non - Deducted" && (
+            {orderData?.order_type === "Non - Deducted" && (
               <>
                 <button
                   style={{ width: "200px" }}
@@ -629,7 +629,7 @@ const SalesList = () => {
               <Select
                 style={{ width: "200px", height: "45px", border: "2px solid" }}
                 onChange={(e) => handleStatus(e, orderData)}
-                value={{ label: orderData.status, value: orderData.status }}
+                value={{ label: orderData?.status, value: orderData?.status }}
                 options={options}
               />
             </div>

@@ -9660,3 +9660,6 @@ table.orderDetails td {
   font-size: 18px;
   border: 1px solid #d7d1d1;
 }
+.productimgname:hover {
+  cursor: pointer;
+}

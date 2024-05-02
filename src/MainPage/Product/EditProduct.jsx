@@ -4,6 +4,7 @@ import { API_URL } from "../../config";
 import axios from "axios";
 import { useHistory } from "react-router-dom";
 import { ToastContainer, toast } from "react-toastify";
+import reset from "../../assets/img/reset1.png";
 
 const EditProduct = () => {
   const { id } = useParams();
@@ -13,6 +14,7 @@ const EditProduct = () => {
   const [perUnitWeight, setPerUnitWeight] = useState("");
   const [categoryList, setCategoryList] = useState([]);
   const [rawMaterial, setRawMaterial] = useState([]);
+  // const [message, setMessage] = useState([]);
   const [inputs, setInputs] = useState([
     {
       raw_id: "",
@@ -122,10 +124,19 @@ const EditProduct = () => {
       { raw_id: "", substrate: "", flat_size: "", perunit_weight: "" },
     ]);
   };
-  const handleDeleteInput = (index) => {
-    const newArray = [...inputs];
-    newArray.splice(index, 1);
-    setInputs(newArray);
+  const handleDeleteInput = () => {
+    // setMessage("");
+    // const newArray = [...inputs];
+    // newArray.splice(index, 1);
+    setInputs([
+      {
+        raw_id: "",
+        substrate: "",
+        flat_size: "",
+        perunit_weight: "",
+        weight: "",
+      },
+    ]);
   };
 
   const handleCalChange = (event, index) => {
@@ -225,8 +236,8 @@ const EditProduct = () => {
         <div className="content">
           <div className="page-header">
             <div className="page-title">
-              <h4>Product Edit Category</h4>
-              <h6>Edit a product Category</h6>
+              <h4>Product Edit</h4>
+              <h6>Edit a product</h6>
             </div>
           </div>
           {/* /add */}
@@ -387,23 +398,28 @@ const EditProduct = () => {
                       className="col-lg-2 col-sm-2 col-12 form-group"
                       key={index}
                     >
-                      <label>Action</label>
-                      {inputs.length > 1 && (
-                        <button
-                          className="delplus"
-                          onClick={() => handleDeleteInput(index)}
-                        >
-                          -
-                        </button>
-                      )}
-                      {index === inputs.length - 1 && (
-                        <button
-                          className="addplus"
-                          onClick={() => handleAddInput()}
-                        >
-                          +
-                        </button>
-                      )}
+                      {index === 0 && <label>Action</label>}
+                      {index > 0 && <label>&nbsp;</label>}
+                      <div className="d-flex">
+                        {index === inputs.length - 1 && (
+                          <button
+                            className="addplus"
+                            onClick={() => handleAddInput()}
+                          >
+                            +
+                          </button>
+                        )}
+                        {index === inputs.length - 1 && index > 0 && (
+                          <>
+                            <button
+                              className="reset mx-3"
+                              onClick={() => handleDeleteInput(index)}
+                            >
+                              <img src={reset} />
+                            </button>
+                          </>
+                        )}
+                      </div>
                     </div>
                     {/* <div className="body"> {JSON.stringify(inputs)} </div> */}
                   </>
