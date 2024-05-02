@@ -210,11 +210,10 @@ const Addsales = () => {
     let manage_weight = document.getElementById("manage_weight" + index);
     let req_weight = document.getElementById("req_weight" + index);
     let addButton = document.getElementById("addplus" + index);
-    let delButton = document.getElementById("delplus" + index);
     manage_weight = Number(manage_weight.value);
     dropValue = JSON.parse(dropValue.value);
     let arr = [...stockDeduction];
-    console.log(delButton.value, dropValue);
+    console.log(req_weight.value, manage_weight);
 
     if (!item["total_weight"]) {
       item["total_weight"] = 0;
@@ -291,9 +290,9 @@ const Addsales = () => {
     console.log(mergedArray);
     const groupedData = mergedArray.reduce((acc, curr) => {
       const { raw_id, ...rest } = curr;
-      if (!raw_id) {
-        return acc;
-      }
+      // if (!raw_id) {
+      //   return acc;
+      // }
       if (!acc[raw_id]) {
         acc[raw_id] = [];
       }
@@ -304,26 +303,26 @@ const Addsales = () => {
       return acc;
     }, {});
     console.log(groupedData);
-    let data = { stockData: groupedData, order_type: "Deducted" };
-    const config = {
-      method: "PUT",
-      url: `${API_URL}/order/stockdeduction`,
-      headers: {
-        "Content-Type": "application/json",
-        token: token.token,
-      },
-      data: data,
-    };
-    console.log(data);
-    await axios(config)
-      .then((response) => {
-        console.log(response.data);
-        handleSubmit("Deducted");
-        history.push("/dream-pos/sales/saleslist/");
-      })
-      .catch((error) => {
-        console.log(error);
-      });
+    // let data = { stockData: groupedData, order_type: "Deducted" };
+    // const config = {
+    //   method: "PUT",
+    //   url: `${API_URL}/order/stockdeduction`,
+    //   headers: {
+    //     "Content-Type": "application/json",
+    //     token: token.token,
+    //   },
+    //   data: data,
+    // };
+    // console.log(data);
+    // await axios(config)
+    //   .then((response) => {
+    //     console.log(response.data);
+    //     handleSubmit("Deducted");
+    //     history.push("/dream-pos/sales/saleslist/");
+    //   })
+    //   .catch((error) => {
+    //     console.log(error);
+    //   });
   };
 
   const handleDeleteStock = () => {
@@ -530,8 +529,8 @@ const Addsales = () => {
                               <label>Substrate {index + 1}</label>
                               <input
                                 type="text"
-                                name="req_weight"
-                                id={`req_weight${index}`}
+                                name="substrate"
+                                id={`substrate${index}`}
                                 value={item.substrate}
                                 disabled
                               />
