@@ -43,7 +43,7 @@ const Editsales = () => {
   }
 
   const { id } = useParams();
-  console.log(id);
+  // console.log(id);
 
   useEffect(() => {
     fetchSingleOrder();
@@ -178,6 +178,7 @@ const Editsales = () => {
     console.log(deducted);
     if (deducted === "Deducted") {
       datas = {
+        _id: id,
         product_id: product_category.value,
         product_name:
           product_category.options[product_category.selectedIndex].text,
@@ -188,6 +189,7 @@ const Editsales = () => {
       };
     } else {
       datas = {
+        _id: id,
         product_id: product_category.value,
         product_name:
           product_category.options[product_category.selectedIndex].text,
@@ -210,7 +212,7 @@ const Editsales = () => {
     await axios(config)
       .then((response) => {
         console.log(response.data);
-        history.push("/dream-pos/sales/saleslist");
+        window.location.href = "/dream-pos/sales/saleslist";
       })
       .catch((error) => {
         console.log(error);
