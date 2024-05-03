@@ -150,7 +150,7 @@ const AddBrand = () => {
                     <div className="form-group">
                       <label>Get GSM*</label>
                       <input
-                        type="number"
+                        type="text"
                         id="raw_gsm"
                         name="raw_gsm"
                         onChange={handleChange}

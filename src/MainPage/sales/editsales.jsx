@@ -281,14 +281,22 @@ const Editsales = () => {
       }
     }
   };
+  const checkRawInclude = (id) => {
+    let val = inputs.findIndex((raw) => raw.raw_id === id);
+    // console.log(val);
+    return val;
+  };
   const handleSubmitStock = async () => {
     let mergedArray = [];
     rawMaterial.map((item) => {
-      item?.raw_stock.map((subitem) => {
-        mergedArray.push(subitem);
-      });
+      if (checkRawInclude(item._id) !== -1) {
+        console.log(item);
+        item?.raw_stock.map((subitem) => {
+          mergedArray.push(subitem);
+        });
+      }
     });
-    console.log(stockDeduction);
+    // console.log(stockDeduction);
     for (const obj2 of stockDeduction) {
       const existingIndex = mergedArray.findIndex(
         (obj1) => obj1.batch_no === obj2.batch_no

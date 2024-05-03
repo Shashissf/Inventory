@@ -117,7 +117,7 @@ const Addsales = () => {
     };
     await axios(config)
       .then((response) => {
-        // console.log(response.data.result);
+        console.log(response.data.result);
         console.log(setInputs);
         let topSum = 0;
         if (response.data?.result?.raw_required?.length > 0) {
@@ -213,7 +213,7 @@ const Addsales = () => {
     manage_weight = Number(manage_weight.value);
     dropValue = JSON.parse(dropValue.value);
     let arr = [...stockDeduction];
-    console.log(req_weight.value, manage_weight);
+    console.log(dropValue, req_weight.value, manage_weight);
 
     if (!item["total_weight"]) {
       item["total_weight"] = 0;
@@ -243,17 +243,10 @@ const Addsales = () => {
       });
       return;
     } else {
-      // if (addDed !== 0) {
-      //   let newVal = addDed - manage_weight;
-      //   setAddDed(newVal);
-      // } else {
-      //   let newVal = req_weight.value - addDed - manage_weight;
-      //   setAddDed(newVal);
-      // }
       const indexToUpdate = stockDeduction.findIndex(
         (obj) => obj.id === dropValue.id
       );
-
+      // console.log(indexToUpdate);
       if (indexToUpdate !== -1) {
         const newData = [...stockDeduction];
         dropValue.manage_weight = manage_weight;
@@ -269,14 +262,28 @@ const Addsales = () => {
       }
     }
   };
+  useEffect(() => {
+    console.log(stockDeduction);
+  }, [stockDeduction]);
+
+  const checkRawInclude = (id) => {
+    let val = inputs.findIndex((raw) => raw.raw_id === id);
+    // console.log(val);
+    return val;
+  };
   const handleSubmitStock = async () => {
     let mergedArray = [];
     rawMaterial.map((item) => {
-      item?.raw_stock.map((subitem) => {
-        mergedArray.push(subitem);
-      });
+      // console.log(checkRawInclude(item._id));
+      if (checkRawInclude(item._id) !== -1) {
+        console.log(item);
+        item?.raw_stock.map((subitem) => {
+          mergedArray.push(subitem);
+        });
+      }
     });
     for (const obj2 of stockDeduction) {
+      // console.log(obj2);
       const existingIndex = mergedArray.findIndex(
         (obj1) => obj1.batch_no === obj2.batch_no
       );
@@ -290,9 +297,9 @@ const Addsales = () => {
     console.log(mergedArray);
     const groupedData = mergedArray.reduce((acc, curr) => {
       const { raw_id, ...rest } = curr;
-      // if (!raw_id) {
-      //   return acc;
-      // }
+      if (!raw_id) {
+        return acc;
+      }
       if (!acc[raw_id]) {
         acc[raw_id] = [];
       }
@@ -302,27 +309,27 @@ const Addsales = () => {
       acc[raw_id].push(rest);
       return acc;
     }, {});
-    console.log(groupedData);
-    // let data = { stockData: groupedData, order_type: "Deducted" };
-    // const config = {
-    //   method: "PUT",
-    //   url: `${API_URL}/order/stockdeduction`,
-    //   headers: {
-    //     "Content-Type": "application/json",
-    //     token: token.token,
-    //   },
-    //   data: data,
-    // };
-    // console.log(data);
-    // await axios(config)
-    //   .then((response) => {
-    //     console.log(response.data);
-    //     handleSubmit("Deducted");
-    //     history.push("/dream-pos/sales/saleslist/");
-    //   })
-    //   .catch((error) => {
-    //     console.log(error);
-    //   });
+    // console.log(groupedData);
+    let data = { stockData: groupedData, order_type: "Deducted" };
+    const config = {
+      method: "PUT",
+      url: `${API_URL}/order/stockdeduction`,
+      headers: {
+        "Content-Type": "application/json",
+        token: token.token,
+      },
+      data: data,
+    };
+    console.log(data);
+    await axios(config)
+      .then((response) => {
+        console.log(response.data);
+        handleSubmit("Deducted");
+        history.push("/dream-pos/sales/saleslist/");
+      })
+      .catch((error) => {
+        console.log(error);
+      });
   };
 
   const handleDeleteStock = () => {
