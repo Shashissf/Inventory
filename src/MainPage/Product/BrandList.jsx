@@ -97,7 +97,7 @@ const BrandList = () => {
                 state: record,
               }}
             >
-              Add Stock
+              Manage Stock
             </Link>
             <Link
               className="me-3"

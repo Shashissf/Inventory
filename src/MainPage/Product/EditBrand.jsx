@@ -109,7 +109,7 @@ const EditBrand = () => {
         <div className="content">
           <div className="page-header">
             <div className="page-title">
-              <h4>Raw Material Edit Category</h4>
+              <h4>Raw Material Edit</h4>
               <h6>Edit a Raw Material</h6>
             </div>
           </div>
@@ -157,7 +157,7 @@ const EditBrand = () => {
                     </select>
                   </div>
                 </div>
-                
+
                 <div className="col-lg-3 col-sm-4 col-12">
                   <div className="form-group">
                     <label>Gauge</label>
@@ -192,8 +192,6 @@ const EditBrand = () => {
                   </div>
                 </div>
 
-                
-
                 <div className="col-lg-3 col-sm-6 col-12">
                   <div className="form-group">
                     <label>Stock Quantity Alert</label>
@@ -207,7 +205,12 @@ const EditBrand = () => {
                 </div>
                 <hr></hr>
 
-<h6 className="pb-3">GSM of the Product - {singleCat?.raw_gsm * singleCat?.raw_gauge?singleCat?.raw_gsm * singleCat?.raw_gauge:0}</h6>
+                <h6 className="pb-3">
+                  GSM of the Product -{" "}
+                  {singleCat?.raw_gsm * singleCat?.raw_gauge
+                    ? singleCat?.raw_gsm * singleCat?.raw_gauge
+                    : 0}
+                </h6>
                 <div className="col-lg-12">
                   <button className="btn btn-submit me-2" onClick={updateData}>
                     Submit

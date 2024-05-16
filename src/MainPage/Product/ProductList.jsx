@@ -106,11 +106,24 @@ const ProductList = () => {
       obj.product_category?.categoryName.toLowerCase().includes(letter)
     );
   }
+  function filterDataContainingLetterName(arr, letter) {
+    return arr.filter((obj) => obj.product_name.toLowerCase().includes(letter));
+  }
 
   const handleSearchCategory = (e) => {
     let value = e.target.value;
     setDefaultValue(value);
     const filteredData = filterDataContainingLetter(
+      productList,
+      value.toLowerCase()
+    );
+    setFilterData(filteredData);
+    // console.log(filteredData);
+  };
+  const handleSearchName = (e) => {
+    let value = e.target.value;
+    setDefaultValue(value);
+    const filteredData = filterDataContainingLetterName(
       productList,
       value.toLowerCase()
     );
@@ -175,6 +188,17 @@ const ProductList = () => {
                 <div className="row">
                   <div className="col-lg-12 col-sm-12">
                     <div className="row">
+                      <div className="col-lg-4 col-sm-4 col-4">
+                        <div className="form-group">
+                          <input
+                            type="text"
+                            name="changedrop"
+                            className="searchfield"
+                            placeholder="Search by Name...."
+                            onChange={handleSearchName}
+                          />
+                        </div>
+                      </div>
                       <div className="col-lg-4 col-sm-4 col-4">
                         <div className="form-group">
                           <input

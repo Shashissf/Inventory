@@ -150,7 +150,7 @@ const SalesList = () => {
         if (month < 10) {
           month = "0" + month;
         }
-        return year + "-" + month + "-" + dt;
+        return dt + "-" + month + "-" + year;
       },
     },
     {
@@ -507,7 +507,7 @@ const SalesList = () => {
                 ) : (
                   <Table
                     columns={columns}
-                    dataSource={orderList}
+                    dataSource={orderList.reverse()}
                     rowKey={(record) => record.id}
                   />
                 )}

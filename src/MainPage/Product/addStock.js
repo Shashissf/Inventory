@@ -13,7 +13,7 @@ const AddStock = () => {
   console.log(location);
 
   const [inputs, setInputs] = useState([
-    { batch_no: "", stock_weight: "", date: "" },
+    { batch_no: "", stock_weight: "", date: "", status: true },
   ]);
 
   const data = {};
@@ -22,11 +22,14 @@ const AddStock = () => {
     if (location.state.raw_stock.length > 0) {
       setInputs(location.state.raw_stock);
     } else {
-      setInputs([{ batch_no: "", stock_weight: "", date: "" }]);
+      setInputs([{ batch_no: "", stock_weight: "", date: "", status: true }]);
     }
   }, []);
   const handleAddInput = () => {
-    setInputs([...inputs, { batch_no: "", stock_weight: "", date: "" }]);
+    setInputs([
+      ...inputs,
+      { batch_no: "", stock_weight: "", date: "", status: true },
+    ]);
   };
 
   const handleChange = (event, index) => {
@@ -37,9 +40,14 @@ const AddStock = () => {
     setInputs(onChangeValue);
   };
 
-  const handleDeleteInput = (index) => {
+  const handleDeleteInput = (index, item) => {
     const newArray = [...inputs];
-    newArray.splice(index, 1);
+    console.log(newArray, item);
+    if (item.batch_no === "" || item.stock_weight === "") {
+      newArray.splice(index, 1);
+    } else {
+      item.status = false;
+    }
     setInputs(newArray);
   };
 
@@ -144,7 +152,7 @@ const AddStock = () => {
                       {inputs.length > 1 && (
                         <button
                           className="delplus"
-                          onClick={() => handleDeleteInput(index)}
+                          onClick={() => handleDeleteInput(index, item)}
                         >
                           -
                         </button>

@@ -142,7 +142,7 @@ const Sidebar = (props) => {
                     </ul>
                   </li>
                   <li className="submenu-open">
-                    <h6 className="submenu-hdr">Sales</h6>
+                    <h6 className="submenu-hdr">Orders</h6>
                     <ul>
                       <li
                         className={
@@ -157,7 +157,7 @@ const Sidebar = (props) => {
                         >
                           <i data-feather="shopping-cart" />
                           <FeatherIcon icon="shopping-cart" />
-                          <span>Sales</span>
+                          <span>Orders</span>
                         </Link>
                       </li>
 
