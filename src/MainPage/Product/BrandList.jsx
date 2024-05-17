@@ -1,21 +1,20 @@
 /* eslint-disable no-dupe-keys */
 import React, { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
-// import Swal from "sweetalert2";
 import Table from "../../EntryFile/datatable";
 import { PlusIcon, EditIcon, DeleteIcon } from "../../EntryFile/imagePath";
-// import Select2 from "react-select2-wrapper";
 import "react-select2-wrapper/css/select2.css";
-// import { noAuto } from "@fortawesome/fontawesome-svg-core";
 import { API_URL } from "../../config";
 import axios from "axios";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
+import SearchDropdown from "./searchDropdown";
 
 const BrandList = () => {
   const [rawMaterial, setRawMaterial] = useState([]);
   const [filterData, setFilterData] = useState([]);
   const [defaultValue, setDefaultValue] = useState(null);
+  const [rawNameSearch, setRawNameSearch] = useState(null);
 
   const columns = [
     {
@@ -125,6 +124,15 @@ const BrandList = () => {
     fetchRawMaterials();
   }, [token.token]);
 
+  useEffect(() => {
+    let options = [];
+    rawMaterial.map((item) => {
+      options.push({ title: item.raw_name });
+    });
+
+    setRawNameSearch(options);
+  }, [rawMaterial]);
+
   const fetchRawMaterials = async () => {
     const config = {
       method: "GET",
@@ -148,24 +156,19 @@ const BrandList = () => {
     return arr.filter((obj) => obj.raw_name.toLowerCase().includes(letter));
   }
 
-  const handleSearchCategory = (e) => {
-    let value = e.target.value;
-    setDefaultValue(value);
+  const handleSelect = (selectedOption) => {
+    if (selectedOption) {
+      setDefaultValue(selectedOption.title);
+    } else {
+      setDefaultValue("");
+    }
+
     const filteredData = filterDataContainingLetter(
       rawMaterial,
-      value.toLowerCase()
+      selectedOption?.title.toLowerCase()
     );
     setFilterData(filteredData);
-    // console.log(filteredData);
   };
-
-  // const handleDropdown = (e) => {
-  //   let name = e.target.name;
-  //   let value = e.target.value;
-  //   // setdropChange(value);
-  //   console.log(name, value);
-  //   fetchRawMaterials();
-  // };
 
   const handleDelete = async (id) => {
     var confirmDelete;
@@ -226,16 +229,15 @@ const BrandList = () => {
                 <div className="row">
                   <div className="col-lg-12 col-sm-12">
                     <div className="row">
-                      <div className="col-lg-4 col-sm-4 col-4">
-                        <div className="form-group">
-                          <input
-                            type="text"
-                            name="changedrop"
-                            className="searchfield"
-                            placeholder="Search by Name...."
-                            onChange={handleSearchCategory}
-                          />
-                        </div>
+                      <div className="col-lg-4 col-sm-4 col-12 mb-3">
+                        {/* <div className="form-group"> */}
+                        <SearchDropdown
+                          options={rawNameSearch}
+                          onSelect={handleSelect}
+                          className="searchfield"
+                          placeholder={"Search by Name"}
+                        />
+                        {/* </div> */}
                       </div>
                     </div>
                   </div>

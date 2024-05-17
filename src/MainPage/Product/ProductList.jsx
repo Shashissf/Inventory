@@ -11,13 +11,29 @@ import { API_URL } from "../../config";
 import axios from "axios";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
+import SearchDropdown from "./searchDropdown";
 
 const ProductList = () => {
   const [productList, setProductList] = useState([]);
   const [filterData, setFilterData] = useState([]);
   const [defaultValue, setDefaultValue] = useState(null);
+  const [productNameSearch, setProductNameSearch] = useState(null);
+  const [categoryNameSearch, setCategoryNameSearch] = useState(null);
 
-  console.log(productList);
+  useEffect(() => {
+    let options = [];
+    let category = [];
+    productList.map((item) => {
+      options.push({ title: item.product_name });
+    });
+    productList.map((item) => {
+      if (item.product_category) {
+        category.push({ title: item.product_category.categoryName });
+      }
+    });
+    setProductNameSearch(options);
+    setCategoryNameSearch(category);
+  }, [productList]);
 
   const columns = [
     {
@@ -110,27 +126,6 @@ const ProductList = () => {
     return arr.filter((obj) => obj.product_name.toLowerCase().includes(letter));
   }
 
-  const handleSearchCategory = (e) => {
-    let value = e.target.value;
-    setDefaultValue(value);
-    const filteredData = filterDataContainingLetter(
-      productList,
-      value.toLowerCase()
-    );
-    setFilterData(filteredData);
-    // console.log(filteredData);
-  };
-  const handleSearchName = (e) => {
-    let value = e.target.value;
-    setDefaultValue(value);
-    const filteredData = filterDataContainingLetterName(
-      productList,
-      value.toLowerCase()
-    );
-    setFilterData(filteredData);
-    // console.log(filteredData);
-  };
-
   const handleDelete = async (id) => {
     var confirmDelete;
     if (confirm("Do you want to delete !!")) {
@@ -160,6 +155,32 @@ const ProductList = () => {
         });
     }
   };
+  const handleSelect = (selectedOption) => {
+    if (selectedOption) {
+      setDefaultValue(selectedOption.title);
+    } else {
+      setDefaultValue("");
+    }
+
+    const filteredData = filterDataContainingLetterName(
+      productList,
+      selectedOption?.title.toLowerCase()
+    );
+    setFilterData(filteredData);
+  };
+  const handleCategorySelect = (selectedOption) => {
+    if (selectedOption) {
+      setDefaultValue(selectedOption.title);
+    } else {
+      setDefaultValue("");
+    }
+
+    const filteredData = filterDataContainingLetter(
+      productList,
+      selectedOption?.title.toLowerCase()
+    );
+    setFilterData(filteredData);
+  };
 
   return (
     <>
@@ -188,27 +209,25 @@ const ProductList = () => {
                 <div className="row">
                   <div className="col-lg-12 col-sm-12">
                     <div className="row">
-                      <div className="col-lg-4 col-sm-4 col-4">
-                        <div className="form-group">
-                          <input
-                            type="text"
-                            name="changedrop"
-                            className="searchfield"
-                            placeholder="Search by Name...."
-                            onChange={handleSearchName}
-                          />
-                        </div>
+                      <div className="col-lg-4 col-sm-4 col-12 mb-3">
+                        {/* <div className="form-group"> */}
+                        <SearchDropdown
+                          options={productNameSearch}
+                          onSelect={handleSelect}
+                          className="searchfield"
+                          placeholder={"Search by Name"}
+                        />
+                        {/* </div> */}
                       </div>
-                      <div className="col-lg-4 col-sm-4 col-4">
-                        <div className="form-group">
-                          <input
-                            type="text"
-                            name="changedrop"
-                            className="searchfield"
-                            placeholder="Search by Category...."
-                            onChange={handleSearchCategory}
-                          />
-                        </div>
+                      <div className="col-lg-4 col-sm-4 col-12 mb-3">
+                        {/* <div className="form-group"> */}
+                        <SearchDropdown
+                          options={categoryNameSearch}
+                          onSelect={handleCategorySelect}
+                          className="searchfield"
+                          placeholder={"Search by Category"}
+                        />
+                        {/* </div> */}
                       </div>
                     </div>
                   </div>

@@ -11,6 +11,7 @@ import "react-toastify/dist/ReactToastify.css";
 import { Select } from "antd";
 import { useHistory } from "react-router-dom";
 import Modal from "react-modal";
+import SearchDropdown from "../Product/searchDropdown";
 
 const SalesList = () => {
   const [orderList, setOrderList] = useState([]);
@@ -19,8 +20,29 @@ const SalesList = () => {
   const [modalIsOpen, setIsOpen] = useState(false);
   const [singleYieldData, setSingleYieldData] = useState({});
   const [orderData, setOrderData] = useState({});
+  const [productNameSearch, setProductNameSearch] = useState(null);
+  const [customerNameSearch, setCustomerNameSearch] = useState(null);
 
   const history = useHistory();
+
+  useEffect(() => {
+    let options = [];
+    let customers = [];
+
+    orderList.map((item) => {
+      if (item.product_name) {
+        options.push({ title: item.product_name });
+      }
+    });
+    orderList.map((item) => {
+      if (item.customername) {
+        customers.push({ title: item.customername });
+      }
+    });
+    console.log(customers);
+    setProductNameSearch(options);
+    setCustomerNameSearch(customers);
+  }, [orderList]);
 
   var options = [
     { label: "Not Started", value: "Not Started" },
@@ -294,22 +316,31 @@ const SalesList = () => {
     return arr.filter((obj) => obj.status.includes(letter));
   }
 
-  const handleSearchCategory = (e) => {
-    let value = e.target.value;
-    setDefaultValue(value);
+  const handleSelect = (selectedOption) => {
+    if (selectedOption) {
+      setDefaultValue(selectedOption.title);
+    } else {
+      setDefaultValue("");
+    }
 
     const filteredData = filterDataContainingLetter(
       orderList,
-      value.toLowerCase()
+      selectedOption?.title.toLowerCase()
     );
     setFilterData(filteredData);
   };
-  const handleSearchCustomers = (e) => {
-    let value = e.target.value;
-    setDefaultValue(value);
+
+  const handleSearchCustomers = (selectedOption) => {
+    console.log(selectedOption);
+    if (selectedOption) {
+      setDefaultValue(selectedOption.title);
+    } else {
+      setDefaultValue("");
+    }
+
     const filteredData = filterDataContainingLetterCustomer(
       orderList,
-      value.toLowerCase()
+      selectedOption?.title.toLowerCase()
     );
     setFilterData(filteredData);
   };
@@ -454,27 +485,23 @@ const SalesList = () => {
                 <div className="row">
                   <div className="col-lg-12 col-sm-12">
                     <div className="row">
-                      <div className="col-lg-4 col-sm-4 col-xs-6">
-                        <div className="form-group">
-                          <input
-                            type="text"
-                            name="changedrop"
-                            placeholder="Search Customers...."
-                            onChange={handleSearchCustomers}
-                          />
-                        </div>
+                      <div className="col-lg-4 col-sm-4 col-xs-6 mb-3">
+                        <SearchDropdown
+                          options={customerNameSearch}
+                          onSelect={handleSearchCustomers}
+                          className="searchfield"
+                          placeholder={"Search Customers"}
+                        />
                       </div>
-                      <div className="col-lg-4 col-sm-4 col-xs-6">
-                        <div className="form-group">
-                          <input
-                            type="text"
-                            name="changedrop"
-                            placeholder="Search Products...."
-                            onChange={handleSearchCategory}
-                          />
-                        </div>
+                      <div className="col-lg-4 col-sm-4 col-xs-6 mb-3">
+                        <SearchDropdown
+                          options={productNameSearch}
+                          onSelect={handleSelect}
+                          className="searchfield"
+                          placeholder={"Search Products"}
+                        />
                       </div>
-                      <div className="col-lg-4 col-sm-4 col-xs-6">
+                      <div className="col-lg-4 col-sm-4 col-xs-6 mb-3">
                         <div className="form-group">
                           <select
                             name="status"

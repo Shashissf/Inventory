@@ -9,7 +9,6 @@ import reset from "../../assets/img/reset1.png";
 const EditProduct = () => {
   const { id } = useParams();
   const [singleCat, setSingleCat] = useState({});
-  // const [singleRaw, setSingleRaw] = useState({});
   const [flatSize, setFlatSize] = useState("");
   const [perUnitWeight, setPerUnitWeight] = useState("");
   const [categoryList, setCategoryList] = useState([]);
@@ -79,11 +78,14 @@ const EditProduct = () => {
     e.preventDefault();
     const name = e.target.name;
     const value = e.target.value;
+
     setSingleCat({ ...singleCat, [name]: value });
-    // setDisabled(false);
   };
 
   const updateData = async () => {
+    // var product_category = document.getElementById("product_category");
+    // value = product_category.options[product_category.selectedIndex].text;
+
     singleCat["id"] = id;
     singleCat["raw_required"] = inputs;
 
@@ -205,7 +207,7 @@ const EditProduct = () => {
     };
     await axios(config)
       .then((response) => {
-        console.log(response.data);
+        // console.log(response.data);
         setRawMaterial(response.data.result);
       })
       .catch((error) => {
@@ -306,6 +308,7 @@ const EditProduct = () => {
                     <select
                       name="product_category"
                       id="product_category"
+                      onChange={handleChange}
                       className="cat"
                     >
                       {categoryList?.map((item) => {
