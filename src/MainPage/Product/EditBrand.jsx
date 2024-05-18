@@ -98,6 +98,39 @@ const EditBrand = () => {
       });
   };
 
+  const submitAndManageStock = async () => {
+    singleCat["id"] = id;
+
+    console.log(singleCat);
+    const config = {
+      method: "PUT",
+      url: `${API_URL}/raw-metrial/`,
+      headers: {
+        "Content-Type": "application/json",
+        token: token.token,
+      },
+      data: JSON.stringify(singleCat),
+    };
+    await axios(config)
+      .then((response) => {
+        console.log(response.data);
+        if (response.data.success === true) {
+          setTimeout(() => {
+            toast.success(response.data.msg, {
+              position: toast.POSITION.TOP_CENTER,
+            });
+            history.push({
+              pathname: `/dream-pos/product/addstock/${id}`,
+              state: singleCat,
+            });
+          }, 2000);
+        }
+      })
+      .catch((error) => {
+        console.log(error);
+      });
+  };
+
   const handleCancel = () => {
     history.push("/dream-pos/product/brandlist-product");
   };
@@ -215,8 +248,17 @@ const EditBrand = () => {
                   <button className="btn btn-submit me-2" onClick={updateData}>
                     Submit
                   </button>
-                  <button className="btn btn-cancel" onClick={handleCancel}>
+                  <button
+                    className="btn btn-cancel me-2"
+                    onClick={handleCancel}
+                  >
                     Cancel
+                  </button>
+                  <button
+                    className="btn btn-cancel"
+                    onClick={submitAndManageStock}
+                  >
+                    Submit and manage stock
                   </button>
                 </div>
               </div>

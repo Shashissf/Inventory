@@ -46,9 +46,38 @@ const AddBrand = () => {
       })
       .catch((error) => {
         console.log(error);
-        // if (error.data.success === false) {
-        //   setError(error.data.msg);
-        // }
+      });
+  };
+  const submitAndManageStock = async (e) => {
+    e.preventDefault();
+    let raw_cat = document.getElementById("raw_category");
+    addRawMaterial["raw_category"] = raw_cat.value;
+    addRawMaterial["gsm_product"] =
+      addRawMaterial?.raw_gsm * addRawMaterial?.raw_gauge;
+    // addRawMaterial["raw_gsm"] = getGsm;
+    const config = {
+      method: "POST",
+      url: `${API_URL}/raw-metrial`,
+      headers: {
+        "Content-Type": "application/json",
+        token: token.token,
+      },
+      data: JSON.stringify(addRawMaterial),
+    };
+    await axios(config)
+      .then((response) => {
+        console.log(response.data);
+        if (response.data.success === true) {
+          setTimeout(() => {
+            history.push({
+              pathname: `/dream-pos/product/addstock/${response.data.result._id}`,
+              state: response.data.result,
+            });
+          }, 2000);
+        }
+      })
+      .catch((error) => {
+        console.log(error);
       });
   };
 
@@ -182,8 +211,17 @@ const AddBrand = () => {
                     <button type="submit" className="btn btn-submit me-2">
                       Submit
                     </button>
-                    <button className="btn btn-cancel" onClick={handleCancel}>
+                    <button
+                      className="btn btn-cancel me-2"
+                      onClick={handleCancel}
+                    >
                       Cancel
+                    </button>
+                    <button
+                      className="btn btn-cancel"
+                      onClick={submitAndManageStock}
+                    >
+                      Submit and manage stock
                     </button>
                   </div>
                 </div>
