@@ -124,6 +124,15 @@ const SalesList = () => {
       dataIndex: "key",
       render: (text, object, index) => index + 1,
       sorter: (a, b) => a.key - b.key,
+      responsive: ["sm"],
+      width: "7%",
+    },
+    {
+      title: "Sl no",
+      dataIndex: "key",
+      render: (text, object, index) => index + 1,
+      sorter: (a, b) => a.key - b.key,
+      responsive: ["xs"],
     },
     // {
     //   title: "Order Id",
@@ -156,6 +165,7 @@ const SalesList = () => {
       ),
       sorter: (a, b) => a.product_name.length - b.product_name.length,
       ellipsis: true,
+      width: "15%",
     },
     {
       title: "Date",

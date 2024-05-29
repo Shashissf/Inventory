@@ -2026,7 +2026,7 @@ a:hover {
   border: 1px solid rgba(145, 158, 171, 0.32);
   height: 57px;
   width: 100%;
-  font-size: 14px;
+  font-size: 16px;
   font-weight: 500;
   color: #637381;
   padding: 10px 15px;
@@ -9673,4 +9673,13 @@ table.orderDetails td {
 }
 .productimgname:hover {
   cursor: pointer;
+}
+.css-gdh49b-MuiAutocomplete-listbox .MuiAutocomplete-option {
+  padding: 12px !important;
+}
+.ant-table-column-title,
+.productimgname {
+  width: 100%;
+  word-wrap: break-word;
+  white-space: normal;
 }

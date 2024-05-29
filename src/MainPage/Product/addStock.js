@@ -5,7 +5,6 @@ import { API_URL } from "../../config";
 import { useParams } from "react-router-dom";
 import { useLocation } from "react-router-dom";
 import { useHistory } from "react-router-dom";
-import { Input } from "antd";
 
 const AddStock = () => {
   const { id } = useParams();
@@ -17,8 +16,6 @@ const AddStock = () => {
     { batch_no: "", stock_weight: "", date: "", status: true },
   ]);
 
-  const [activeDataCount,setActiveDataCount]=useState(inputs.length)
-let idx=0
   const data = {};
 
   useEffect(() => {
@@ -29,14 +26,12 @@ let idx=0
     }
   }, []);
   const handleAddInput = () => {
-    
     setInputs([
       ...inputs,
-      {batch_no: "", stock_weight: "", date: "", status: true },
+      { batch_no: "", stock_weight: "", date: "", status: true },
     ]);
   };
 
-  console.log(Input)
   const handleChange = (event, index) => {
     let { name, value } = event.target;
     let onChangeValue = [...inputs];
@@ -50,22 +45,11 @@ let idx=0
     console.log(newArray, item);
     if (item.batch_no === "" || item.stock_weight === "") {
       newArray.splice(index, 1);
-      setInputs(newArray);
     } else {
-      console.log(item)
       item.status = false;
-      setInputs((prevItems) => 
-        prevItems.map(inputItem => 
-          inputItem.batch_no === item.batch_no ? { ...inputItem, item} : inputItem
-        )
-      );     
     }
+    setInputs(newArray);
   };
-
-  useEffect(()=>{
-    const filteredInputs = inputs.filter(item => item.status !== false);
-    setActiveDataCount(filteredInputs.length)
-  },[inputs])
 
   const token = JSON.parse(localStorage.getItem("items"));
 
@@ -121,10 +105,8 @@ let idx=0
           <div className="card-body">
             <form onSubmit={handleSubmit}>
               <div className="row">
-                {inputs?.map((item, index) => {
-                  if(item.status != false){
-                    idx++
-                    return(<>
+                {inputs?.map((item, index) => (
+                  <>
                     <div
                       className="col-lg-3 col-sm-3 col-12 form-group"
                       key={index}
@@ -170,13 +152,12 @@ let idx=0
                       {inputs.length > 1 && (
                         <button
                           className="delplus"
-                          type="reset"
                           onClick={() => handleDeleteInput(index, item)}
                         >
                           -
                         </button>
                       )}
-                      {idx === activeDataCount && (
+                      {index === inputs.length - 1 && (
                         <button
                           className="addplus"
                           onClick={() => handleAddInput()}
@@ -187,9 +168,7 @@ let idx=0
                     </div>
                     {/* <div className="body"> {JSON.stringify(inputs)} </div> */}
                   </>
-                    )
-                  }
-                })}
+                ))}
 
                 <div className="col-lg-12">
                   <button type="submit" className="btn btn-submit me-2">

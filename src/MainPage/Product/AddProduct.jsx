@@ -42,14 +42,18 @@ const AddProduct = () => {
   const handleChange = (e) => {
     e.preventDefault();
     const name = e.target.name;
-    const value = e.target.value;
+    let value = e.target.value;
+
+    if (name === "product_image") {
+      value = e.target.files[0];
+    }
     setProductDetails({ ...productDetails, [name]: value });
   };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
     let product_category = document.getElementById("product_category");
-    console.log(product_category.value);
+    console.log(productDetails);
     productDetails["product_category"] = product_category.value;
     productDetails["raw_required"] = inputs;
     console.log(productDetails);
@@ -273,7 +277,7 @@ const AddProduct = () => {
           {/* /add */}
           <div className="card">
             <div className="card-body">
-              <form onSubmit={handleSubmit}>
+              <form onSubmit={handleSubmit} encType="multipart/form-data">
                 <div className="row">
                   <div className="col-lg-6 col-sm-6 col-12">
                     <div className="form-group">
@@ -294,6 +298,7 @@ const AddProduct = () => {
                         id="product_category"
                         className="cat"
                         required
+                        style={{ height: "40px", fontSize: "14px" }}
                       >
                         {categoryList?.map((item) => {
                           return (
@@ -338,6 +343,16 @@ const AddProduct = () => {
                       />
                     </div>
                   </div>
+                  <div className="col-lg-6 col-sm-6 col-12">
+                    <div className="form-group">
+                      <label>Choose Image</label>
+                      <input
+                        type="file"
+                        name="product_image"
+                        onChange={handleChange}
+                      />
+                    </div>
+                  </div>
                   <h6 className="pb-3">Raw Material requirements - </h6>
                   {inputs?.map((item, index) => (
                     <>
@@ -352,6 +367,7 @@ const AddProduct = () => {
                           className="cat"
                           onChange={(event) => handleCalChange(event, index)}
                           required
+                          style={{ height: "40px", fontSize: "14px" }}
                         >
                           <option value={""}>Choose Raw Material</option>
                           {rawMaterial?.map((items) => {

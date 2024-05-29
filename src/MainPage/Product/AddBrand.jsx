@@ -141,6 +141,7 @@ const AddBrand = () => {
                         id="raw_category"
                         className="cat"
                         required
+                        style={{ height: "40px", fontSize: "14px" }}
                       >
                         {categoryList?.map((item) => {
                           return (

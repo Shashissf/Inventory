@@ -21,17 +21,11 @@ const CategoryList = () => {
       dataIndex: "key",
       render: (text, object, index) => index + 1,
       sorter: (a, b) => a.key.length - b.key.length,
+      responsive: ["sm"],
     },
     {
       title: "Category Name",
       dataIndex: "categoryName",
-      // render: (text, record) => (
-      //   <div className="productimgname">
-      //     <Link to="#" style={{ fontSize: "15px", marginLeft: "10px" }}>
-      //       {record.categoryName}
-      //     </Link>
-      //   </div>
-      // ),
       onFilter: (value, record) => record.categoryName.includes(value),
       sorter: (a, b) => a.categoryName.length - b.categoryName.length,
       ellipsis: true,

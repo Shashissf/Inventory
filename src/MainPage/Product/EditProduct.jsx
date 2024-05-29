@@ -13,7 +13,7 @@ const EditProduct = () => {
   const [perUnitWeight, setPerUnitWeight] = useState("");
   const [categoryList, setCategoryList] = useState([]);
   const [rawMaterial, setRawMaterial] = useState([]);
-  // const [message, setMessage] = useState([]);
+  const [message, setMessage] = useState([]);
   const [inputs, setInputs] = useState([
     {
       raw_id: "",
@@ -178,10 +178,25 @@ const EditProduct = () => {
         if (index > 0) {
           flat = Number(flat) + 5 * index;
           console.log(flat, index);
+          if (Number(response.data.result.raw_length) < flat) {
+            message[index] = "Flat Size width is greater than Substrate width";
+          } else if (Number(response.data.result.raw_length) > flat) {
+            message[index] = "Flat Size width is less than Substrate width";
+          } else if (Number(response.data.result.raw_length) === flat) {
+            message[index] = "Flat Size width same as Substrate width";
+          }
           inputs[index]["flat_size"] = `${flat} X ${Number(
             singleCat.product_length
           )}`;
         } else {
+          if (Number(response.data.result.raw_length) < flat) {
+            message[index] = "Flat Size width is greater than Substrate width";
+          } else if (Number(response.data.result.raw_length) > flat) {
+            message[index] = "Flat Size width is less than Substrate width";
+          } else if (Number(response.data.result.raw_length) === flat) {
+            message[index] = "Flat Size width same as Substrate width";
+          }
+          setMessage(message);
           inputs[index]["flat_size"] = `${flat} X ${Number(
             singleCat.product_length
           )}`;
@@ -310,6 +325,7 @@ const EditProduct = () => {
                       id="product_category"
                       onChange={handleChange}
                       className="cat"
+                      style={{ height: "40px", fontSize: "14px" }}
                     >
                       {categoryList?.map((item) => {
                         return (
@@ -346,6 +362,7 @@ const EditProduct = () => {
                         id={`raw_category${index}`}
                         className="cat"
                         onChange={(event) => handleCalChange(event, index)}
+                        style={{ height: "40px", fontSize: "14px" }}
                       >
                         <option value={""}>Choose Raw Material</option>
                         {rawMaterial?.map((items) => {
@@ -366,6 +383,7 @@ const EditProduct = () => {
                           );
                         })}
                       </select>
+                      <span>{message[index]}</span>
                     </div>
                     <div
                       className="col-lg-3 col-sm-3 col-12 form-group"

@@ -1,5 +1,5 @@
 /* eslint-disable no-dupe-keys */
-import React, { useState, useEffect } from "react";
+import React, { useRef, useState, useEffect } from "react";
 import { Link } from "react-router-dom";
 // import Swal from "sweetalert2";
 import Table from "../../EntryFile/datatable";
@@ -41,6 +41,7 @@ const ProductList = () => {
       dataIndex: "key",
       render: (text, object, index) => index + 1,
       sorter: (a, b) => a.key.length - b.key.length,
+      width: "8%",
     },
     {
       title: "Name",
@@ -50,11 +51,13 @@ const ProductList = () => {
       ),
       sorter: (a, b) => a.product_name.length - b.product_name.length,
       ellipsis: true,
+      width: "25%",
     },
     {
       title: "SKU",
       dataIndex: "product_sku",
       sorter: (a, b) => a.product_sku.length - b.product_sku.length,
+      width: "13%",
     },
     {
       title: "Category",
@@ -182,6 +185,18 @@ const ProductList = () => {
     setFilterData(filteredData);
   };
 
+  const printRef = useRef();
+
+  const handlePrint = () => {
+    const printContents = printRef.current.innerHTML;
+    const originalContents = document.body.innerHTML;
+
+    document.body.innerHTML = printContents;
+    window.print();
+    document.body.innerHTML = originalContents;
+    window.location.reload();
+  };
+
   return (
     <>
       <div className="page-wrapper">
@@ -192,14 +207,17 @@ const ProductList = () => {
               <h4>Product List</h4>
               <h6>Manage your Products</h6>
             </div>
-            <div className="page-btn">
+            <div className="page-btn d-flex ">
               <Link
                 to="/dream-pos/product/addproduct-product"
-                className="btn btn-added"
+                className="btn btn-added me-2"
               >
                 <img src={PlusIcon} alt="img" className="me-1" />
                 Add New Product
               </Link>
+              <button className="btn btn-added" onClick={handlePrint}>
+                Print
+              </button>
             </div>
           </div>
           {/* /product list */}
@@ -233,7 +251,7 @@ const ProductList = () => {
                   </div>
                 </div>
               </div>
-              <div className="table-responsive">
+              <div ref={printRef} className="table-responsive">
                 {defaultValue?.length > 0 ? (
                   <>
                     <Table

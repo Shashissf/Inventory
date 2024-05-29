@@ -1,5 +1,5 @@
 /* eslint-disable no-dupe-keys */
-import React, { useState, useEffect } from "react";
+import React, { useRef, useState, useEffect } from "react";
 import { Link } from "react-router-dom";
 import Table from "../../EntryFile/datatable";
 import { PlusIcon, EditIcon, DeleteIcon } from "../../EntryFile/imagePath";
@@ -22,6 +22,7 @@ const BrandList = () => {
       dataIndex: "key",
       render: (text, object, index) => index + 1,
       sorter: (a, b) => a.key.length - b.key.length,
+      width: "6%",
     },
     {
       title: "Name",
@@ -34,11 +35,13 @@ const BrandList = () => {
       //   </div>
       // ),
       sorter: (a, b) => a.raw_name.length - b.raw_name.length,
+      width: "15%",
     },
     {
       title: "SKU",
       dataIndex: "raw_sku",
       sorter: (a, b) => a.raw_sku.length - b.raw_sku.length,
+      width: "13%",
     },
     {
       title: "Category",
@@ -47,6 +50,7 @@ const BrandList = () => {
       sorter: (a, b) =>
         a.raw_category?.categoryName.length -
         b.raw_category?.categoryName.length,
+      width: "15%",
     },
     {
       title: "Gauge",
@@ -199,6 +203,17 @@ const BrandList = () => {
         });
     }
   };
+  const printRef = useRef();
+
+  const handlePrint = () => {
+    const printContents = printRef.current.innerHTML;
+    const originalContents = document.body.innerHTML;
+
+    document.body.innerHTML = printContents;
+    window.print();
+    document.body.innerHTML = originalContents;
+    window.location.reload();
+  };
 
   return (
     <>
@@ -210,14 +225,17 @@ const BrandList = () => {
               <h4>Raw Material List</h4>
               <h6>Manage your Raw Material</h6>
             </div>
-            <div className="page-btn">
+            <div className="page-btn d-flex">
               <Link
                 to="/dream-pos/product/addbrand-product"
-                className="btn btn-added"
+                className="btn btn-added me-2"
               >
                 <img src={PlusIcon} alt="img" className="me-1" />
                 Add Raw Material
               </Link>
+              <button className="btn btn-added" onClick={handlePrint}>
+                Print
+              </button>
             </div>
           </div>
           {/* /product list */}
@@ -245,7 +263,7 @@ const BrandList = () => {
               </div>
               {/* /Filter */}
 
-              <div className="table-responsive">
+              <div ref={printRef} className="table-responsive">
                 {defaultValue?.length > 0 ? (
                   <>
                     <Table
