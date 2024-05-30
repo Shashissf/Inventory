@@ -16,6 +16,9 @@ const AddStock = () => {
     { batch_no: "", stock_weight: "", date: "", status: true },
   ]);
 
+    const [activeDataCount,setActiveDataCount]=useState(inputs.length)
+    let idx=0
+
   const data = {};
 
   useEffect(() => {
@@ -45,11 +48,21 @@ const AddStock = () => {
     console.log(newArray, item);
     if (item.batch_no === "" || item.stock_weight === "") {
       newArray.splice(index, 1);
+      setInputs(newArray);
     } else {
       item.status = false;
+      setInputs((prevItems) => 
+        prevItems.map(inputItem => 
+          inputItem.batch_no === item.batch_no ? { ...inputItem, item} : inputItem
+        )
+      );
     }
-    setInputs(newArray);
   };
+
+  useEffect(()=>{
+    const filteredInputs = inputs.filter(item => item.status !== false);
+    setActiveDataCount(filteredInputs.length)
+  },[inputs])
 
   const token = JSON.parse(localStorage.getItem("items"));
 
@@ -105,8 +118,11 @@ const AddStock = () => {
           <div className="card-body">
             <form onSubmit={handleSubmit}>
               <div className="row">
-                {inputs?.map((item, index) => (
-                  <>
+              {inputs?.map((item, index) => {
+                  if(item.status != false){
+                    idx++
+                    return(
+                      <>
                     <div
                       className="col-lg-3 col-sm-3 col-12 form-group"
                       key={index}
@@ -152,14 +168,16 @@ const AddStock = () => {
                       {inputs.length > 1 && (
                         <button
                           className="delplus"
+                          type="reset"
                           onClick={() => handleDeleteInput(index, item)}
                         >
                           -
                         </button>
                       )}
-                      {index === inputs.length - 1 && (
+                      {idx === activeDataCount && (
                         <button
                           className="addplus"
+                          type="reset"
                           onClick={() => handleAddInput()}
                         >
                           +
@@ -168,7 +186,7 @@ const AddStock = () => {
                     </div>
                     {/* <div className="body"> {JSON.stringify(inputs)} </div> */}
                   </>
-                ))}
+                )}})}
 
                 <div className="col-lg-12">
                   <button type="submit" className="btn btn-submit me-2">
