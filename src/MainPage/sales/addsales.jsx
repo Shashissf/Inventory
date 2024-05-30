@@ -598,10 +598,14 @@ const Addsales = () => {
                                 >
                                   {rawMaterial?.map((rawitem) => {
                                     if (rawitem._id === item.raw_id) {
+                                      console.log()
+                                      
                                       return (
                                         <>
                                           {rawitem?.raw_stock.map(
                                             (subitem, index) => {
+                                              console.log(subitem)
+                                              if(subitem.status != false){
                                               subitem["raw_id"] = item.raw_id;
                                               subitem["id"] = rawStockId;
                                               subitem["previous_stock_weight"] =
@@ -621,10 +625,12 @@ const Addsales = () => {
                                                 </option>
                                               );
                                             }
+                                            }
                                           )}
                                           ;
                                         </>
                                       );
+                                    
                                     }
                                   })}
                                 </select>

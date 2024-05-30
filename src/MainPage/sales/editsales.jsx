@@ -624,6 +624,7 @@ const Editsales = () => {
                                         <>
                                           {rawitem?.raw_stock.map(
                                             (subitem, index) => {
+                                              if(subitem.status != false){
                                               subitem["raw_id"] = item.raw_id;
                                               subitem["id"] = rawStockId;
                                               rawStockId++;
@@ -640,6 +641,7 @@ const Editsales = () => {
                                                   {subitem.stock_weight}
                                                 </option>
                                               );
+                                            }
                                             }
                                           )}
                                           ;
