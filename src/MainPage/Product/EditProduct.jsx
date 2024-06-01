@@ -102,7 +102,7 @@ const EditProduct = () => {
       fd.append("product_name", singleCat.product_name);
       fd.append("product_width", singleCat.product_width);
       fd.append("repeat_width", singleCat.repeat_width);
-      fd.append("id", id);
+      fd.append("_id", id);
       config = {
         method: "PUT",
         url: `${API_URL}/product/`,
@@ -115,8 +115,9 @@ const EditProduct = () => {
         data: fd,
       };
     } else {
-      singleCat["id"] = id;
-      singleCat["raw_required"] = inputs;
+      singleCat["_id"] = id;
+      singleCat["raw_required"] = JSON.stringify(inputs);
+      singleCat["product_category"] =product_category.value
 
       console.log(singleCat);
 
