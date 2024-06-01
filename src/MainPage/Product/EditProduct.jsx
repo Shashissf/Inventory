@@ -14,6 +14,7 @@ const EditProduct = () => {
   const [categoryList, setCategoryList] = useState([]);
   const [rawMaterial, setRawMaterial] = useState([]);
   const [message, setMessage] = useState([]);
+  // const [file, setFile] = useState();
   const [inputs, setInputs] = useState([
     {
       raw_id: "",
@@ -78,6 +79,12 @@ const EditProduct = () => {
     e.preventDefault();
     const name = e.target.name;
     const value = e.target.value;
+    // if (name === "product_image") {
+    //   value = e.target.files[0];
+    // }
+    // if(){
+    //   setFile(URL.createObjectURL(e.target.files[0]));
+    // }
 
     setSingleCat({ ...singleCat, [name]: value });
   };
@@ -337,15 +344,19 @@ const EditProduct = () => {
                     </select>
                   </div>
                 </div>
-                {/* <div className="col-lg-12">
-                  <button
-                    className="btn btn-submit-disable me-2"
-                    disabled={disabled}
-                    onClick={updateDataDisable}
-                  >
-                    Update
-                  </button>
-                </div> */}
+                <div className="col-lg-6 col-sm-6 col-12">
+                  <div className="form-group">
+                    <label>Choose Image</label>
+                    <input
+                      type="file"
+                      name="product_image"
+                      onChange={handleChange}
+                    />
+                    <img
+                      src={`https://erp.marutiprinters.in/${singleCat?.product_image}`}
+                    ></img>
+                  </div>
+                </div>
 
                 <hr></hr>
 
