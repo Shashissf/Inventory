@@ -14,7 +14,7 @@ const EditProduct = () => {
   const [categoryList, setCategoryList] = useState([]);
   const [rawMaterial, setRawMaterial] = useState([]);
   const [message, setMessage] = useState([]);
-  // const [file, setFile] = useState();
+  const [imageFlag, setImageFlag] = useState(false);
   const [inputs, setInputs] = useState([
     {
       raw_id: "",
@@ -78,34 +78,59 @@ const EditProduct = () => {
   const handleChange = (e) => {
     e.preventDefault();
     const name = e.target.name;
-    const value = e.target.value;
-    // if (name === "product_image") {
-    //   value = e.target.files[0];
-    // }
-    // if(){
-    //   setFile(URL.createObjectURL(e.target.files[0]));
-    // }
+    let value = e.target.value;
+
+    if (name === "product_image") {
+      value = e.target.files[0];
+
+      setImageFlag(true);
+    }
 
     setSingleCat({ ...singleCat, [name]: value });
   };
 
   const updateData = async () => {
-    // var product_category = document.getElementById("product_category");
+    var product_category = document.getElementById("product_category");
     // value = product_category.options[product_category.selectedIndex].text;
+    let config = {};
+    if (imageFlag) {
+      let fd = new FormData();
+      fd.append("product_image", singleCat.product_image);
+      fd.append("product_category", product_category.value);
+      fd.append("raw_required", JSON.stringify(inputs));
+      fd.append("product_length", singleCat.product_length);
+      fd.append("product_name", singleCat.product_name);
+      fd.append("product_width", singleCat.product_width);
+      fd.append("repeat_width", singleCat.repeat_width);
+      fd.append("id", id);
+      config = {
+        method: "PUT",
+        url: `${API_URL}/product/`,
+        headers: {
+          "Content-Type": "multipart/form-data",
+          Accept: "application/json",
+          type: "formData",
+          token: token.token,
+        },
+        data: fd,
+      };
+    } else {
+      singleCat["id"] = id;
+      singleCat["raw_required"] = inputs;
 
-    singleCat["id"] = id;
-    singleCat["raw_required"] = inputs;
+      console.log(singleCat);
 
-    console.log(singleCat);
-    const config = {
-      method: "PUT",
-      url: `${API_URL}/product/`,
-      headers: {
-        "Content-Type": "application/json",
-        token: token.token,
-      },
-      data: JSON.stringify(singleCat),
-    };
+      config = {
+        method: "PUT",
+        url: `${API_URL}/product/`,
+        headers: {
+          "Content-Type": "application/json",
+          token: token.token,
+        },
+        data: JSON.stringify(singleCat),
+      };
+    }
+
     await axios(config)
       .then((response) => {
         console.log(response.data);
@@ -134,9 +159,6 @@ const EditProduct = () => {
     ]);
   };
   const handleDeleteInput = () => {
-    // setMessage("");
-    // const newArray = [...inputs];
-    // newArray.splice(index, 1);
     setInputs([
       {
         raw_id: "",
@@ -225,7 +247,6 @@ const EditProduct = () => {
         "Content-Type": "application/json",
         token: token.token,
       },
-      // validateStatus: (status) => status !== 404,
     };
     await axios(config)
       .then((response) => {
@@ -347,14 +368,14 @@ const EditProduct = () => {
                 <div className="col-lg-6 col-sm-6 col-12">
                   <div className="form-group">
                     <label>Choose Image</label>
+                    <img
+                      src={`https://erp.marutiprinters.in/${singleCat?.product_image}`}
+                    ></img>
                     <input
                       type="file"
                       name="product_image"
                       onChange={handleChange}
                     />
-                    <img
-                      src={`https://erp.marutiprinters.in/${singleCat?.product_image}`}
-                    ></img>
                   </div>
                 </div>
 

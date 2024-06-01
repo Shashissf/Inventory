@@ -47,28 +47,28 @@ const AddProduct = () => {
     if (name === "product_image") {
       value = e.target.files[0];
     }
-    console.log(value)
+    console.log(value);
     setProductDetails({ ...productDetails, [name]: value });
   };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
     let product_category = document.getElementById("product_category");
-    let fd=new FormData()
-    fd.append('product_image',productDetails.product_image)
-    fd.append('product_category',product_category.value)
-    fd.append('raw_required',JSON.stringify(inputs))
-    fd.append('product_length',productDetails.product_length)
-    fd.append('product_name',productDetails.product_name)
-    fd.append('product_width',productDetails.product_width)
-    fd.append('repeat_width',productDetails.repeat_width)
+    let fd = new FormData();
+    fd.append("product_image", productDetails.product_image);
+    fd.append("product_category", product_category.value);
+    fd.append("raw_required", JSON.stringify(inputs));
+    fd.append("product_length", productDetails.product_length);
+    fd.append("product_name", productDetails.product_name);
+    fd.append("product_width", productDetails.product_width);
+    fd.append("repeat_width", productDetails.repeat_width);
     const config = {
       method: "POST",
       url: `${API_URL}/product`,
       headers: {
         "Content-Type": "multipart/form-data",
-        "Accept": "application/json",
-        "type": "formData",
+        Accept: "application/json",
+        type: "formData",
         token: token,
       },
       data: fd,
