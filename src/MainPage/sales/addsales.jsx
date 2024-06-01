@@ -32,7 +32,7 @@ const Addsales = () => {
   const [rawMaterial, setRawMaterial] = useState([]);
   const [stockDeduction, setStockDeduction] = useState([]);
   const [modalIsOpen, setIsOpen] = useState(false);
-  // const [addDed, setAddDed] = useState(0);
+  const [stockString, setStockString] = useState([]);
   var addDed = 0;
 
   let rawStockId = 1;
@@ -375,6 +375,7 @@ const Addsales = () => {
                         id="product_category"
                         className="cat"
                         onChange={handleChange}
+                        style={{ height: "40px", fontSize: "14px" }}
                       >
                         <option value={""}>Select Product</option>
                         {allProducts?.map((item) => {
@@ -595,42 +596,43 @@ const Addsales = () => {
                                   name="stock_deduction"
                                   id={`stock_deduction${index}`}
                                   className="cat"
+                                  style={{ height: "40px", fontSize: "14px" }}
                                 >
                                   {rawMaterial?.map((rawitem) => {
                                     if (rawitem._id === item.raw_id) {
-                                      console.log()
-                                      
+                                      console.log();
+
                                       return (
                                         <>
                                           {rawitem?.raw_stock.map(
                                             (subitem, index) => {
-                                              console.log(subitem)
-                                              if(subitem.status != false){
-                                              subitem["raw_id"] = item.raw_id;
-                                              subitem["id"] = rawStockId;
-                                              subitem["previous_stock_weight"] =
-                                                subitem.stock_weight;
-                                              rawStockId++;
+                                              console.log(subitem);
+                                              if (subitem.status != false) {
+                                                subitem["raw_id"] = item.raw_id;
+                                                subitem["id"] = rawStockId;
+                                                subitem[
+                                                  "previous_stock_weight"
+                                                ] = subitem.stock_weight;
+                                                rawStockId++;
 
-                                              // setRawStockId((prev) => prev + 1);
-                                              return (
-                                                <option
-                                                  value={JSON.stringify(
-                                                    subitem
-                                                  )}
-                                                  key={index}
-                                                >
-                                                  {subitem.batch_no}-
-                                                  {subitem.stock_weight}
-                                                </option>
-                                              );
-                                            }
+                                                // setRawStockId((prev) => prev + 1);
+                                                return (
+                                                  <option
+                                                    value={JSON.stringify(
+                                                      subitem
+                                                    )}
+                                                    key={index}
+                                                  >
+                                                    {subitem.batch_no}-
+                                                    {subitem.stock_weight}
+                                                  </option>
+                                                );
+                                              }
                                             }
                                           )}
                                           ;
                                         </>
                                       );
-                                    
                                     }
                                   })}
                                 </select>
@@ -677,6 +679,10 @@ const Addsales = () => {
                                 Stock:{" "}
                                 {stockDeduction?.map((stockitem, index) => {
                                   if (stockitem?.raw_id === item?.raw_id) {
+                                    setStockString([
+                                      ...stockString,
+                                      { stockitem },
+                                    ]);
                                     return (
                                       <span key={index}>
                                         {`${stockitem.batch_no} - ${stockitem.manage_weight}`}
