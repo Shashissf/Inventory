@@ -15,6 +15,7 @@ const EditProduct = () => {
   const [rawMaterial, setRawMaterial] = useState([]);
   const [message, setMessage] = useState([]);
   const [imageFlag, setImageFlag] = useState(false);
+  const [file, setFile] = useState();
   const [inputs, setInputs] = useState([
     {
       raw_id: "",
@@ -82,6 +83,8 @@ const EditProduct = () => {
 
     if (name === "product_image") {
       value = e.target.files[0];
+      setFile(URL.createObjectURL(e.target.files[0]));
+      console.log(URL.createObjectURL(e.target.files[0]), e.target.files[0]);
 
       setImageFlag(true);
     }
@@ -117,7 +120,7 @@ const EditProduct = () => {
     } else {
       singleCat["_id"] = id;
       singleCat["raw_required"] = JSON.stringify(inputs);
-      singleCat["product_category"] =product_category.value
+      singleCat["product_category"] = product_category.value;
 
       console.log(singleCat);
 
@@ -369,9 +372,17 @@ const EditProduct = () => {
                 <div className="col-lg-6 col-sm-6 col-12">
                   <div className="form-group">
                     <label>Choose Image</label>
-                    <img
-                      src={`https://erp.marutiprinters.in/${singleCat?.product_image}`}
-                    ></img>
+                    <div className="image-size">
+                      {!file && singleCat?.product_image ? (
+                        <img
+                          src={`https://erp.marutiprinters.in/${singleCat?.product_image}`}
+                        ></img>
+                      ) : (
+                        <></>
+                      )}
+
+                      {file && <img src={file} />}
+                    </div>
                     <input
                       type="file"
                       name="product_image"

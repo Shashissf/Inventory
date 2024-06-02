@@ -1,17 +1,16 @@
 /* eslint-disable no-dupe-keys */
 import React, { useRef, useState, useEffect } from "react";
 import { Link } from "react-router-dom";
-// import Swal from "sweetalert2";
 import Table from "../../EntryFile/datatable";
 import { PlusIcon, EditIcon, DeleteIcon } from "../../EntryFile/imagePath";
-// import Select2 from "react-select2-wrapper";
 import "react-select2-wrapper/css/select2.css";
-// import { noAuto } from "@fortawesome/fontawesome-svg-core";
 import { API_URL } from "../../config";
 import axios from "axios";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import SearchDropdown from "./searchDropdown";
+import Modal from "react-modal";
+import defaultImage from "../../assets/img/default.png";
 
 const ProductList = () => {
   const [productList, setProductList] = useState([]);
@@ -19,6 +18,8 @@ const ProductList = () => {
   const [defaultValue, setDefaultValue] = useState(null);
   const [productNameSearch, setProductNameSearch] = useState(null);
   const [categoryNameSearch, setCategoryNameSearch] = useState(null);
+  const [modalIsOpen, setIsOpen] = useState(false);
+  const [imagePath, setimagePath] = useState();
 
   useEffect(() => {
     let options = [];
@@ -35,6 +36,40 @@ const ProductList = () => {
     setCategoryNameSearch(category);
   }, [productList]);
 
+  const customStyles = {
+    content: {
+      width: "38%",
+      height: "60%",
+      top: "50%",
+      left: "50%",
+      right: "auto",
+      bottom: "auto",
+      marginRight: "-50%",
+      transform: "translate(-50%, -50%)",
+      zIndex: 999999,
+    },
+    overlay: {
+      background: "#6c5a5669",
+    },
+  };
+  function afterOpenModal() {
+    // references are now sync'd and can be accessed.
+    // subtitle.style.color = "#f00";
+  }
+
+  function closeModal() {
+    setIsOpen(false);
+  }
+  function openModal(imagepath) {
+    if (imagepath !== undefined) {
+      setimagePath(`https://erp.marutiprinters.in/${imagepath}`);
+    } else {
+      console.log(defaultImage);
+      setimagePath(defaultImage);
+    }
+    setIsOpen(true);
+  }
+
   const columns = [
     {
       title: "Sl no",
@@ -47,7 +82,12 @@ const ProductList = () => {
       title: "Name",
       dataIndex: "product_name",
       render: (text, record) => (
-        <div className="productimgname">{record.product_name}</div>
+        <div
+          className="productimgname"
+          onClick={() => openModal(record.product_image)}
+        >
+          {record.product_name}
+        </div>
       ),
       sorter: (a, b) => a.product_name.length - b.product_name.length,
       ellipsis: true,
@@ -273,6 +313,26 @@ const ProductList = () => {
           {/* /product list */}
         </div>
       </div>
+      <Modal
+        isOpen={modalIsOpen}
+        onAfterOpen={afterOpenModal}
+        onRequestClose={closeModal}
+        style={customStyles}
+        contentLabel="Example Modal"
+      >
+        <div className="popup-style">
+          <button className="close" onClick={closeModal}>
+            X
+          </button>
+        </div>
+        <div
+          style={{
+            textAlign: "center",
+          }}
+        >
+          <img src={imagePath}></img>
+        </div>
+      </Modal>
     </>
   );
 };
