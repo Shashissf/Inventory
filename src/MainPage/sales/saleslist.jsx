@@ -39,7 +39,6 @@ const SalesList = () => {
         customers.push({ title: item.customername });
       }
     });
-    console.log(customers);
     setProductNameSearch(options);
     setCustomerNameSearch(customers);
   }, [orderList]);
@@ -642,7 +641,7 @@ const SalesList = () => {
                     <tr>
                       <td key={index}>{item.substrate}</td>
                       <td key={index}>{item.req_weight}</td>
-                      <td key={index}></td>
+                      <td key={index}>{item.deductionString.slice(0, -1)}</td>
                     </tr>
                   </>
                 );

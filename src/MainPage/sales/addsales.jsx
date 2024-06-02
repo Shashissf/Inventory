@@ -32,7 +32,6 @@ const Addsales = () => {
   const [rawMaterial, setRawMaterial] = useState([]);
   const [stockDeduction, setStockDeduction] = useState([]);
   const [modalIsOpen, setIsOpen] = useState(false);
-  const [stockString, setStockString] = useState([]);
   var addDed = 0;
 
   let rawStockId = 1;
@@ -162,6 +161,13 @@ const Addsales = () => {
 
   const handleSubmit = async (deducted) => {
     let product_category = document.getElementById("product_category");
+    inputs.map((row) => {
+      let deductionString = document.getElementById(
+        `deduction-content-${row.raw_id}`
+      ).innerText;
+      row["deductionString"] = deductionString;
+      return row;
+    });
     let datas = {};
     console.log(deducted);
     if (deducted === "Deducted") {
@@ -677,20 +683,18 @@ const Addsales = () => {
                             <div className="stock-cal">
                               <h4>
                                 Stock:{" "}
-                                {stockDeduction?.map((stockitem, index) => {
-                                  if (stockitem?.raw_id === item?.raw_id) {
-                                    setStockString([
-                                      ...stockString,
-                                      { stockitem },
-                                    ]);
-                                    return (
-                                      <span key={index}>
-                                        {`${stockitem.batch_no} - ${stockitem.manage_weight}`}
-                                        {` `}+{` `}
-                                      </span>
-                                    );
-                                  }
-                                })}
+                                <div id={`deduction-content-${item.raw_id}`}>
+                                  {stockDeduction?.map((stockitem, index) => {
+                                    if (stockitem?.raw_id === item?.raw_id) {
+                                      return (
+                                        <span key={index}>
+                                          {`${stockitem.batch_no} - ${stockitem.manage_weight}`}
+                                          {` `}+{` `}
+                                        </span>
+                                      );
+                                    }
+                                  })}
+                                </div>
                               </h4>
                               <h4>
                                 Add/Deduct:{""}
