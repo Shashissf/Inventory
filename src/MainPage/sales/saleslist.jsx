@@ -12,6 +12,7 @@ import { Select } from "antd";
 import { useHistory } from "react-router-dom";
 import Modal from "react-modal";
 import SearchDropdown from "../Product/searchDropdown";
+import defaultimg from "../../assets/img/defaultimg.jpg";
 
 const SalesList = () => {
   const [orderList, setOrderList] = useState([]);
@@ -22,6 +23,8 @@ const SalesList = () => {
   const [orderData, setOrderData] = useState({});
   const [productNameSearch, setProductNameSearch] = useState(null);
   const [customerNameSearch, setCustomerNameSearch] = useState(null);
+  const [productId, setProductId] = useState("");
+  const [productUrl, setProductUrl] = useState("");
 
   const history = useHistory();
 
@@ -102,11 +105,39 @@ const SalesList = () => {
       .then((response) => {
         console.log(response.data);
         setOrderData(response.data.result);
+        setProductId(response.data.result.product_id);
       })
       .catch((error) => {
         console.log(error);
       });
   };
+
+  useEffect(() => {
+    setProductUrl("");
+    fetchProductImage();
+  }, [productId]);
+
+  const fetchProductImage = async () => {
+    const config = {
+      method: "GET",
+      url: `${API_URL}/product/${productId}`,
+      headers: {
+        "Content-Type": "application/json",
+        token: token.token,
+      },
+    };
+    await axios(config)
+      .then((response) => {
+        console.log(response.data);
+        if (response.data?.result.product_image) {
+          setProductUrl(response.data?.result.product_image);
+        }
+      })
+      .catch((error) => {
+        console.log(error);
+      });
+  };
+  console.log(productUrl);
 
   function afterOpenModal() {
     // references are now sync'd and can be accessed.
@@ -601,7 +632,7 @@ const SalesList = () => {
         <hr></hr>
 
         <div className="row">
-          <div className="col-lg-6 col-sm-6 col-12 form-group my-3">
+          <div className="col-lg-4 col-sm-4 col-12 form-group my-3">
             <h4>
               <strong>Customer Name</strong> : {orderData?.customername}
             </h4>
@@ -613,7 +644,7 @@ const SalesList = () => {
               <strong>Raw Material Status</strong> : {orderData?.order_type}
             </h4>
           </div>
-          <div className="col-lg-6 col-sm-6 col-12 form-group my-3">
+          <div className="col-lg-4 col-sm-4 col-12 form-group my-3">
             <h4>
               <strong>Product Name</strong> : {orderData?.product_name}
             </h4>
@@ -623,6 +654,17 @@ const SalesList = () => {
             <h4>
               <strong>Order Status</strong> : {orderData?.status}
             </h4>
+          </div>
+          <div className="col-lg-4 col-sm-4 col-12 form-group my-3">
+            {productUrl ? (
+              <>
+                <img src={`https://erp.marutiprinters.in/${productUrl}`}></img>
+              </>
+            ) : (
+              <>
+                <img src={defaultimg}></img>
+              </>
+            )}
           </div>
           <div className="col-lg-12 col-sm-12 col-12 form-group my-3">
             <h4>
@@ -641,7 +683,7 @@ const SalesList = () => {
                     <tr>
                       <td key={index}>{item.substrate}</td>
                       <td key={index}>{item.req_weight}</td>
-                      <td key={index}>{item.deductionString.slice(0, -1)}</td>
+                      <td key={index}>{item?.deductionString?.slice(0, -1)}</td>
                     </tr>
                   </>
                 );

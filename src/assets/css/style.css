@@ -9690,3 +9690,10 @@ table.orderDetails td {
   z-index: 0;
   position: relative;
 }
+.add-sale-design-section{
+  display: flex;
+  justify-content: space-between;
+}
+.add-sale-design {
+  width: 80%;
+}

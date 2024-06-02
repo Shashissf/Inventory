@@ -84,7 +84,6 @@ const EditProduct = () => {
     if (name === "product_image") {
       value = e.target.files[0];
       setFile(URL.createObjectURL(e.target.files[0]));
-      console.log(URL.createObjectURL(e.target.files[0]), e.target.files[0]);
 
       setImageFlag(true);
     }

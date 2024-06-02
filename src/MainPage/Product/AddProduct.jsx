@@ -14,6 +14,7 @@ const AddProduct = () => {
   const [flatSize, setFlatSize] = useState("");
   const [perUnitWeight, setPerUnitWeight] = useState("");
   const [message, setMessage] = useState([]);
+  const [file, setFile] = useState();
 
   const [inputs, setInputs] = useState([
     {
@@ -46,6 +47,7 @@ const AddProduct = () => {
 
     if (name === "product_image") {
       value = e.target.files[0];
+      setFile(URL.createObjectURL(e.target.files[0]));
     }
     console.log(value);
     setProductDetails({ ...productDetails, [name]: value });
@@ -353,6 +355,9 @@ const AddProduct = () => {
                   <div className="col-lg-6 col-sm-6 col-12">
                     <div className="form-group">
                       <label>Choose Image</label>
+                      <div className="image-size">
+                        {file && <img src={file} />}
+                      </div>
                       <input
                         type="file"
                         name="product_image"

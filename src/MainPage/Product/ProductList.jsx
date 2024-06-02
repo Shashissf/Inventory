@@ -10,7 +10,7 @@ import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import SearchDropdown from "./searchDropdown";
 import Modal from "react-modal";
-import defaultImage from "../../assets/img/default.png";
+import defaultImage from "../../assets/img/defaultimg.jpg";
 
 const ProductList = () => {
   const [productList, setProductList] = useState([]);

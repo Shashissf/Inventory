@@ -6,6 +6,7 @@ import Modal from "react-modal";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import reset from "../../assets/img/reset1.png";
+import defaultimg from "../../assets/img/defaultimg.jpg";
 
 const customStyles = {
   content: {
@@ -23,15 +24,15 @@ const customStyles = {
   },
 };
 
-// Make sure to bind modal to your appElement (https://reactcommunity.org/react-modal/accessibility/)
-// Modal.setAppElement("#yourAppElement");
-
 const Addsales = () => {
   const [weight, setweight] = useState("");
   const [allProducts, setAllProducts] = useState([]);
   const [rawMaterial, setRawMaterial] = useState([]);
   const [stockDeduction, setStockDeduction] = useState([]);
   const [modalIsOpen, setIsOpen] = useState(false);
+  const [imagePath, setimagePath] = useState();
+  const [imageFlag, setImageFlag] = useState(false);
+
   var addDed = 0;
 
   let rawStockId = 1;
@@ -93,6 +94,8 @@ const Addsales = () => {
 
   const handleChange = (e) => {
     let { name, value } = e.target;
+    setimagePath("");
+    setImageFlag(false);
     if (name === "product_name") {
       setCalculateEnable(false);
       setInputs([]);
@@ -117,7 +120,8 @@ const Addsales = () => {
     await axios(config)
       .then((response) => {
         console.log(response.data.result);
-        console.log(setInputs);
+        setimagePath(response.data.result?.product_image);
+        setImageFlag(true);
         let topSum = 0;
         if (response.data?.result?.raw_required?.length > 0) {
           setCalculateEnable(true);
@@ -419,23 +423,26 @@ const Addsales = () => {
                 <hr></hr>
 
                 <h6 className="pb-3">Raw Material requirements - </h6>
-                {inputs?.map((item, index) => {
-                  let rq_weight = item.req_weight / bottomSum;
-                  rq_weight = Math.ceil(rq_weight * 100) / 100;
-                  return (
-                    <div className="row" key={index}>
-                      <div
-                        className="col-lg-3 col-sm-3 col-12 form-group"
-                        key={index}
-                      >
-                        <label>Substrate {index + 1}</label>
-                        <input
-                          type="text"
-                          name="req_weight"
-                          value={item.substrate}
-                          disabled
-                        />
-                        {/* <select
+                <div className="add-sale-design-section">
+                  <div className="add-sale-design">
+                    {inputs?.map((item, index) => {
+                      let rq_weight = item.req_weight / bottomSum;
+                      rq_weight = Math.ceil(rq_weight * 100) / 100;
+                      return (
+                        <>
+                          <div className="row" key={index}>
+                            <div
+                              className="col-lg-3 col-sm-3 col-12 form-group"
+                              key={index}
+                            >
+                              <label>Substrate {index + 1}</label>
+                              <input
+                                type="text"
+                                name="req_weight"
+                                value={item.substrate}
+                                disabled
+                              />
+                              {/* <select
                           name="substrate"
                           id={`raw_category${index}`}
                           className="cat"
@@ -462,39 +469,56 @@ const Addsales = () => {
                             );
                           })}
                         </select> */}
-                      </div>
-                      <div
-                        className="col-lg-3 col-sm-3 col-12 form-group"
-                        key={index}
-                      >
-                        <div className="form-group">
-                          <label>Require Weight(KG)</label>
-                          <input
-                            type="text"
-                            name="req_weight"
-                            value={rq_weight}
-                            disabled
-                          />
-                        </div>
-                      </div>
-                      <div
-                        className="col-lg-3 col-sm-3 col-12 form-group"
-                        key={index}
-                      >
-                        <div className="form-group">
-                          <label>Current Stock(KG)</label>
-                          <input
-                            type="text"
-                            name="current_stock"
-                            value={item.current_stock}
-                            disabled
-                          />
-                        </div>
-                      </div>
-                      {/* <div className="body"> {JSON.stringify(inputs)} </div> */}
-                    </div>
-                  );
-                })}
+                            </div>
+                            <div
+                              className="col-lg-3 col-sm-3 col-12 form-group"
+                              key={index}
+                            >
+                              <div className="form-group">
+                                <label>Require Weight(KG)</label>
+                                <input
+                                  type="text"
+                                  name="req_weight"
+                                  value={rq_weight}
+                                  disabled
+                                />
+                              </div>
+                            </div>
+                            <div
+                              className="col-lg-3 col-sm-3 col-12 form-group"
+                              key={index}
+                            >
+                              <div className="form-group">
+                                <label>Current Stock(KG)</label>
+                                <input
+                                  type="text"
+                                  name="current_stock"
+                                  value={item.current_stock}
+                                  disabled
+                                />
+                              </div>
+                            </div>
+                            {/* <div className="body"> {JSON.stringify(inputs)} </div> */}
+                          </div>
+                        </>
+                      );
+                    })}
+                  </div>
+                  <div className="image-size">
+                    {imagePath && imageFlag && (
+                      <>
+                        <img
+                          src={`https://erp.marutiprinters.in/${imagePath}`}
+                        ></img>
+                      </>
+                    )}
+                    {!imagePath && imageFlag && (
+                      <>
+                        <img src={defaultimg}></img>
+                      </>
+                    )}
+                  </div>
+                </div>
 
                 <div className="col-lg-12">
                   <button
@@ -532,7 +556,6 @@ const Addsales = () => {
                       let m_weight = item.req_weight / bottomSum;
                       m_weight = Math.ceil(m_weight * 100) / 100;
                       addDed = m_weight - item["total_weight"];
-                      console.log(item);
                       return (
                         <>
                           <div className="row" key={index}>
@@ -548,34 +571,6 @@ const Addsales = () => {
                                 value={item.substrate}
                                 disabled
                               />
-                              {/* <select
-                                name="substrate"
-                                id={`raw_category${index}`}
-                                className="cat"
-                                disabled
-                                // onChange={(event) => handleCalChange(event, index)}
-                              >
-                                <option value={""}>Choose Raw Material</option>
-                                {rawMaterial?.map((items) => {
-                                  var selected = false;
-
-                                  item.substrate ===
-                                  `${items.raw_name} - G : ${items.raw_gauge} | W : ${items.raw_length} | GSM : ${items.raw_gsm}`
-                                    ? (selected = true)
-                                    : (selected = false);
-                                  return (
-                                    <option
-                                      selected={selected}
-                                      value={items._id}
-                                      key={items._id}
-                                    >
-                                      {items.raw_name} - G : {items.raw_gauge} |
-                                      W : {items.raw_length} | GSM :{" "}
-                                      {items.raw_gsm}
-                                    </option>
-                                  );
-                                })}
-                              </select> */}
                             </div>
                             <div
                               className="col-lg-2 col-sm-2 col-12 form-group my-3"
@@ -612,7 +607,6 @@ const Addsales = () => {
                                         <>
                                           {rawitem?.raw_stock.map(
                                             (subitem, index) => {
-                                              console.log(subitem);
                                               if (subitem.status != false) {
                                                 subitem["raw_id"] = item.raw_id;
                                                 subitem["id"] = rawStockId;
