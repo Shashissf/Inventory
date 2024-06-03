@@ -15,13 +15,15 @@ const BrandList = () => {
   const [filterData, setFilterData] = useState([]);
   const [defaultValue, setDefaultValue] = useState(null);
   const [rawNameSearch, setRawNameSearch] = useState(null);
+  const [rawCategorySearch, setRawCategorySearch] = useState(null);
+  const [categoryList, setCategoryList] = useState([]);
 
   const columns = [
     {
       title: "Sl no",
       dataIndex: "key",
       render: (text, object, index) => index + 1,
-      sorter: (a, b) => a.key.length - b.key.length,
+      // sorter: (a, b) => a.key.length - b.key.length,
       width: "6%",
     },
     {
@@ -126,15 +128,40 @@ const BrandList = () => {
   const token = JSON.parse(localStorage.getItem("items"));
   useEffect(() => {
     fetchRawMaterials();
+    fetchRawCategory();
   }, [token.token]);
+
+  const fetchRawCategory = async () => {
+    const config = {
+      method: "GET",
+      url: `${API_URL}/category/?type=RAW-MATERIAL`,
+      headers: {
+        "Content-Type": "application/json",
+        token: token.token,
+      },
+    };
+    await axios(config)
+      .then((response) => {
+        console.log(response.data);
+        setCategoryList(response.data.result);
+      })
+      .catch((error) => {
+        console.log(error);
+      });
+  };
 
   useEffect(() => {
     let options = [];
-    rawMaterial.map((item) => {
+    let cat = [];
+    rawMaterial?.map((item) => {
       options.push({ title: item.raw_name });
+    });
+    categoryList?.map((item) => {
+      cat.push({ title: item.categoryName });
     });
 
     setRawNameSearch(options);
+    setRawCategorySearch(cat);
   }, [rawMaterial]);
 
   const fetchRawMaterials = async () => {
@@ -248,14 +275,20 @@ const BrandList = () => {
                   <div className="col-lg-12 col-sm-12">
                     <div className="row">
                       <div className="col-lg-4 col-sm-4 col-12 mb-3">
-                        {/* <div className="form-group"> */}
                         <SearchDropdown
                           options={rawNameSearch}
                           onSelect={handleSelect}
                           className="searchfield"
                           placeholder={"Search by Name"}
                         />
-                        {/* </div> */}
+                      </div>
+                      <div className="col-lg-4 col-sm-4 col-12 mb-3">
+                        <SearchDropdown
+                          options={rawCategorySearch}
+                          onSelect={handleSelect}
+                          className="searchfield"
+                          placeholder={"Search by Category"}
+                        />
                       </div>
                     </div>
                   </div>
@@ -275,7 +308,7 @@ const BrandList = () => {
                 ) : (
                   <Table
                     columns={columns}
-                    dataSource={rawMaterial}
+                    dataSource={rawMaterial.reverse()}
                     rowKey={(record) => record.id}
                   />
                 )}

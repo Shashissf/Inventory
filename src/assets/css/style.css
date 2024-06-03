@@ -5782,7 +5782,7 @@ span.select2-container.select2-container--default.select2-container--open {
 .sidebar .slimScrollDiv {
   width: 260px !important;
   overflow: visible !important;
-  background: #fff;
+  /* background: #fff; */
 }
 @media (max-width: 575px) {
   .sidebar .slimScrollDiv {
@@ -9690,7 +9690,14 @@ table.orderDetails td {
   z-index: 0;
   position: relative;
 }
-.add-sale-design-section{
+.MuiFormControl-root.MuiFormControl-fullWidth.MuiTextField-root.css-feqhe6 {
+  z-index: 0;
+}
+.MuiAutocomplete-root.MuiAutocomplete-hasPopupIcon.css-18nc3u2 {
+  z-index: 0;
+  position: relative;
+}
+.add-sale-design-section {
   display: flex;
   justify-content: space-between;
 }

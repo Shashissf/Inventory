@@ -20,7 +20,7 @@ const CategoryList = () => {
       title: "Sl no",
       dataIndex: "key",
       render: (text, object, index) => index + 1,
-      sorter: (a, b) => a.key.length - b.key.length,
+      // sorter: (a, b) => a.key.length - b.key.length,
       responsive: ["sm"],
     },
     {

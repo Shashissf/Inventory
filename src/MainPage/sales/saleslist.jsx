@@ -153,7 +153,7 @@ const SalesList = () => {
       title: "Sl no",
       dataIndex: "key",
       render: (text, object, index) => index + 1,
-      sorter: (a, b) => a.key - b.key,
+      // sorter: (a, b) => a.key - b.key,
       responsive: ["sm"],
       width: "7%",
     },

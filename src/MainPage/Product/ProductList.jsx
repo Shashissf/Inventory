@@ -20,6 +20,7 @@ const ProductList = () => {
   const [categoryNameSearch, setCategoryNameSearch] = useState(null);
   const [modalIsOpen, setIsOpen] = useState(false);
   const [imagePath, setimagePath] = useState();
+  const [productCat, setProductCat] = useState([]);
 
   useEffect(() => {
     let options = [];
@@ -27,10 +28,8 @@ const ProductList = () => {
     productList.map((item) => {
       options.push({ title: item.product_name });
     });
-    productList.map((item) => {
-      if (item.product_category) {
-        category.push({ title: item.product_category.categoryName });
-      }
+    productCat.map((item) => {
+      category.push({ title: item.categoryName });
     });
     setProductNameSearch(options);
     setCategoryNameSearch(category);
@@ -75,7 +74,7 @@ const ProductList = () => {
       title: "Sl no",
       dataIndex: "key",
       render: (text, object, index) => index + 1,
-      sorter: (a, b) => a.key.length - b.key.length,
+      // sorter: (a, b) => a.key.length - b.key.length,
       width: "8%",
     },
     {
@@ -139,7 +138,27 @@ const ProductList = () => {
   const token = JSON.parse(localStorage.getItem("items"));
   useEffect(() => {
     fetchData();
+    fetchRawCategory();
   }, [token.token]);
+
+  const fetchRawCategory = async () => {
+    const config = {
+      method: "GET",
+      url: `${API_URL}/category/?type=PRODUCT`,
+      headers: {
+        "Content-Type": "application/json",
+        token: token.token,
+      },
+    };
+    await axios(config)
+      .then((response) => {
+        console.log(response.data);
+        setProductCat(response.data.result);
+      })
+      .catch((error) => {
+        console.log(error);
+      });
+  };
 
   const fetchData = async () => {
     const config = {
@@ -303,7 +322,7 @@ const ProductList = () => {
                 ) : (
                   <Table
                     columns={columns}
-                    dataSource={productList}
+                    dataSource={productList.reverse()}
                     rowKey={(record) => record.id}
                   />
                 )}
