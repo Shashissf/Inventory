@@ -1,5 +1,5 @@
 /* eslint-disable no-dupe-keys */
-import React, { useState, useEffect } from "react";
+import React, { useRef, useState, useEffect } from "react";
 import { Link } from "react-router-dom";
 import Table from "../../EntryFile/datatable";
 import { PlusIcon, DeleteIcon } from "../../EntryFile/imagePath";
@@ -501,6 +501,18 @@ const SalesList = () => {
     return gdate;
   };
 
+  const printRef = useRef();
+
+  const handlePrint = () => {
+    const printContents = printRef.current.innerHTML;
+    const originalContents = document.body.innerHTML;
+
+    document.body.innerHTML = printContents;
+    window.print();
+    document.body.innerHTML = originalContents;
+    window.location.reload();
+  };
+
   return (
     <>
       <div className="page-wrapper">
@@ -511,11 +523,17 @@ const SalesList = () => {
               <h4>Order List</h4>
               <h6>Manage your Sales</h6>
             </div>
-            <div className="page-btn">
-              <Link to="/dream-pos/sales/add-sales" className="btn btn-added">
+            <div className="page-btn d-flex">
+              <Link
+                to="/dream-pos/sales/add-sales"
+                className="btn btn-added me-2"
+              >
                 <img src={PlusIcon} alt="img" className="me-1" />
                 Add Order
               </Link>
+              <button className="btn btn-added" onClick={handlePrint}>
+                Print
+              </button>
             </div>
           </div>
           {/* /product list */}
@@ -562,7 +580,7 @@ const SalesList = () => {
                   </div>
                 </div>
               </div>
-              <div className="table-responsive">
+              <div ref={printRef} className="table-responsive">
                 {defaultValue?.length > 0 ? (
                   <>
                     <Table
