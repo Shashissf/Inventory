@@ -253,7 +253,7 @@ const EditProduct = () => {
     };
     await axios(config)
       .then((response) => {
-        // console.log(response.data);
+        console.log(response.data);
         setRawMaterial(response.data.result);
       })
       .catch((error) => {
@@ -411,7 +411,7 @@ const EditProduct = () => {
                         {rawMaterial?.map((items) => {
                           var selected = false;
                           item.substrate ===
-                          `${items.raw_name} - G : ${items.raw_gauge} | W : ${items.raw_length} | GSM : ${items.raw_gsm}`
+                          `${items.raw_name} - G : ${items.raw_gauge} | W : ${items.raw_length} | GSM : ${items.gsm_product}`
                             ? (selected = true)
                             : (selected = false);
                           return (
@@ -421,7 +421,7 @@ const EditProduct = () => {
                               key={items._id}
                             >
                               {items.raw_name} - G : {items.raw_gauge} | W :{" "}
-                              {items.raw_length} | GSM : {items.raw_gsm}
+                              {items.raw_length} | GSM : {items.gsm_product}
                             </option>
                           );
                         })}
